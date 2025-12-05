@@ -20,7 +20,7 @@ const Sidebar = ({ sidebarOpen, toggleSidebar, download }) => {
             <img src={miaLogo} alt="miaLogo" class="logoMIA" />
 
             <div className="sections">
-                <div className="sidebar-section">
+                {/* <div className="sidebar-section">
                     <ul>
                         <li>
                             <a href="/">
@@ -29,7 +29,7 @@ const Sidebar = ({ sidebarOpen, toggleSidebar, download }) => {
                             </a>
                         </li>
                     </ul>
-                </div>
+                </div> */}
                 {/* <div className="sidebar-section">
                     <ul>
                         <li>
