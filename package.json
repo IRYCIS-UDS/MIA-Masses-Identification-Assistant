@@ -53,9 +53,11 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "CI=false react-scripts build",
+    "build": "set \"CI=false\" && set \"SKIP_PREFLIGHT_CHECK=true\" && react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
@@ -76,6 +78,8 @@
     ]
   },
   "devDependencies": {
-    "@faker-js/faker": "^8.4.1"
-  }
+    "@faker-js/faker": "^8.4.1",
+    "gh-pages": "^6.3.0"
+  },
+  "homepage": "https://irycis-uds.github.io/MIA-Masses-Identification-Assistant-APP-main"
 }
