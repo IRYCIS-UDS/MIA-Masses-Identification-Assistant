@@ -1,0 +1,72 @@
+.bg-formulario-azul{
+    background-color: #f6f6ff;
+}
+.titulo-formulario{/* Título azul */
+    font-size: 22px; 
+    font-weight: bold;
+    color: #34495e;
+    padding-top: 5px;
+}
+.little-text{
+  font-size: 17px; 
+}
+
+/* Efecto visual al aparecer los ITEMS */
+@keyframes softHighlight {
+  0% { background-color: #fff9d6; box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.4); }
+  60% { box-shadow: 0 0 8px 4px rgba(255, 215, 0, 0.3); }
+  100% { background-color: transparent; box-shadow: none; }
+}
+.item-appear {
+  animation: softHighlight 1.2s ease-out;
+  border-radius: 8px;
+}
+
+
+/* Forzamos que el borde rojo en caso de error */
+/* .border-danger {
+  border: 1px solid #dc3545 !important;
+} */
+/* Forzamos que el borde sea gris por defecto */
+/* .border-secondary {
+  border: 1px solid #ced4da !important;
+} */
+
+/* Borde rojo cuando hay error */
+/* div.border-danger,
+.form-select.border-danger,
+.form-control.border-danger {
+  border: 1px solid #dc3545 !important;
+} */
+
+/* Borde gris por defecto */
+/* div.border-secondary,
+.form-select.border-secondary,
+.form-control.border-secondary {
+  border: 1px solid #ced4da !important;
+}
+ */
+
+/* Scoped with high specificity to beat Bootstrap */
+.mi-formulario div.border-danger,
+.mi-formulario .form-select.border-danger,
+.mi-formulario .form-control.border-danger,
+.mi-formulario .rounded.border-danger {
+  border: 1px solid #dc3545 !important;
+}
+
+.mi-formulario div.border-secondary,
+.mi-formulario .form-select.border-secondary,
+.mi-formulario .form-control.border-secondary,
+.mi-formulario .rounded.border-secondary {
+  border: 1px solid #ced4da !important;
+}
+
+/* Si aún así falla por foco/box-shadow: eliminar sombra que pueda aparentar borde negro */
+.mi-formulario .form-check-input:focus,
+.mi-formulario .form-select:focus,
+.mi-formulario .form-control:focus,
+.mi-formulario .rounded:focus {
+  box-shadow: none !important;
+  outline: none !important;
+}

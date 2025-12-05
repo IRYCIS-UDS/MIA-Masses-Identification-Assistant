@@ -1,0 +1,16 @@
+/* Creo que ya no uso ninguno -------- BORRAR */
+.bg-formulario-azul{
+    background-color: #f6f6ff;
+}
+.titulo-formulario{
+    font-size: 22px; 
+    font-weight: bold;
+    color: #34495e;
+    padding-top: 5px;
+}
+.formulario{
+  margin-left: 60px;
+}
+.little-text{
+  font-size: 17px; 
+}

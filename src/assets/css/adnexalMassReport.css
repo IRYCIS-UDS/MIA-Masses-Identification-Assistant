@@ -1,0 +1,107 @@
+/* Contenedor principal */
+.adnexal-report {
+  position: relative;
+}
+
+/* Contenedor de los botones */
+.report-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-start;
+  margin-bottom: 1rem;
+  top: 10rem;
+  margin-left: 10rem;
+  left: 10px;
+  z-index: 100;
+}
+
+/* Estilo para los botones */
+.report-buttons .btn {
+  padding: 0.5rem 1rem;
+  color: #fff;
+  border-radius: 5px;
+}
+
+/* Botón "Descargar PDF" */
+.btn-primary {
+  background-color: #007bff;
+  border: none;
+}
+
+/* Botón "Modificar Informe" */
+.btn-secondary {
+  background-color: #6c757d;
+  border: none;
+  color: #fff;
+}
+
+/* Previsualización hoja A4 */
+.previsualizacion {
+  border: 1px solid #ccc;
+  max-width: 800px;
+  width: 100%;
+  min-height: 297mm; /* altura de A4 */
+  padding: 8mm 12mm;
+  margin: auto;
+  background-color: white;
+  font-family: Arial, sans-serif;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  position: relative;
+  padding-bottom: 20mm; /* espacio para footer */
+}
+
+/* Cabecera del informe */
+.report-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  margin-left: 0; /* Asegura que la cabecera quede alineada al borde */
+}
+
+.report-header img {
+  height: 60px;
+}
+
+/* Títulos y subtítulos */
+.informe-title {
+  font-weight: bold;
+  font-size: 1.4rem;
+  margin-bottom: 2.5rem;
+  margin-left: 0; /* No se aplica margen a los títulos */
+}
+
+.informe-subtitle {
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+  margin-left: 0; /* No se aplica margen a los subtítulos */
+}
+
+/* Contenido del informe: párrafos con margen a la izquierda */
+.informe-content p {
+  margin-left: 3mm;
+  margin-bottom: 0.5rem;
+}
+
+/* Clases especiales */
+.mi_formulario {}
+
+.logoIrycis {
+  width: 180px;
+  height: auto !important;
+}
+
+.logoHospi {
+  width: 220px;
+  height: auto !important;
+}
+
+.probabilidad-referencia {
+  color: #6c757d;
+  font-style: italic;
+  font-size: 0.8rem;
+}
+
