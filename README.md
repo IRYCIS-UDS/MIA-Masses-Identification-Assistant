@@ -1,3 +1,9 @@
+## 🌐 Visualización de la página
+
+Puedes ver la versión en línea de la aplicación en GitHub Pages haciendo clic en el siguiente enlace:
+
+[Ir la página](https://irycis-uds.github.io/MIA-Masses-Identification-Assistant)
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
