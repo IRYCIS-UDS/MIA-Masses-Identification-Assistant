@@ -5,8 +5,8 @@ import MassesFormContainer from "../components/MassesFormContainer"; // Formular
 import AdnexalMassReport from "../components/adnexalMassReport"; // Plantillas informes
 import { Modal } from "bootstrap";
 // Logos:
-import logoHospi from "../assets/images/LogoHRYC.jpg";
-import logoIrycis from "../assets/images/logo-irycis.png";
+import LogoHRYC from "../assets/images/LogoHRYC.jpg";
+import LogoIrycis from "../assets/images/logo-irycis.png";
 // PDF:
 import { Document, Page, Text, View, Image, StyleSheet, pdf, Font } from "@react-pdf/renderer";
 import { saveAs } from "file-saver";
@@ -279,8 +279,8 @@ const MainScreen = () => {
         <Page size="A4" style={styles.page}>
           {/* Cabecera */}
           <View style={styles.header}>
-            <Image style={styles.logoHospi} src={logoHospi} />
-            <Image style={styles.logoIrycis} src={logoIrycis} />
+            <Image style={styles.logoHospi} src={LogoHRYC} />
+            <Image style={styles.logoIrycis} src={LogoIrycis} />
           </View>
 
           {/* Contenido dinámico */}
