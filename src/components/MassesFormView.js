@@ -1587,14 +1587,12 @@ const MassesFormView = ({
 
             {/* ================= OVARIO DERECHO ================= */}
             <fieldset className="border rounded p-3 bg-formulario-azul item-appear">
-              <legend className="fw-semibold mb-3 titulo-formulario">
+              <h5 className="fw-semibold mb-3 titulo-formulario">
                 INFORME DEL OVARIO DERECHO
-              </legend>
-
-              <p className="fw-semibold mb-2">
-                ¿Cuánto mide?
-                <span className="little-text"> (Redondee hasta el número entero que considere)</span>
-              </p>
+              </h5>
+              <h5 className="fw-semibold mb-3 titulo-formulario">
+                ¿Cuánto mide? <text className="little-text">(Redondee hasta el número entero que considere)</text>
+              </h5>
 
               <div className="row mb-3">
                 {/* Medida T */}
@@ -1687,15 +1685,13 @@ const MassesFormView = ({
 
             {/* ================= OVARIO IZQUIERDO ================= */}
             <fieldset className="border rounded p-3 bg-formulario-azul item-appear">
-              <legend className="fw-semibold mb-3 titulo-formulario">
+              <h5 className="fw-semibold mb-3 titulo-formulario">
                 INFORME DEL OVARIO IZQUIERDO
-              </legend>
-
-              <p className="fw-semibold mb-2">
-                ¿Cuánto mide?
-                <span className="little-text"> (Redondee hasta el número entero que considere)</span>
-              </p>
-
+              </h5>
+              <h5 className="fw-semibold mb-3 titulo-formulario">
+                ¿Cuánto mide? <text className="little-text">(Redondee hasta el número entero que considere)</text>
+              </h5>
+              
               <div className="row mb-3">
                 {/* Medida T */}
                 <div className="col-md-6">
