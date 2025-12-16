@@ -2,25 +2,37 @@ import { useEffect } from 'react';
 import "../assets/css/MassesFormView.css";
 
 const MassesFormView = ({
+  // Form:
   formData,
   setFormData,
+  // Errores:
   formErrors,
   formErrorsLocal,
+  // Handle general:
   handleChange,
-  handleMasaChange,
+  // Handle condicionales:
+  handleConditionalChange,
+  handleTipoLesionChange,
+  handlePapilasChange,
+  handleTabiquesChange,
+  handleAreaSolidaChange,
+  
   handleAddMasa,
   handleGenerarInforme,
-  masas,
-  payload,
-  conclusionRef,
+
   masaIndexVisible,
   datosBloqueados,
   handleSubmit,
   makeMassesReport,
   setFormErrorsLocal,
-  handleConfirmarInforme,
-  refConclusion,
-  validarMasaSi
+
+
+  // handleConfirmarInforme,
+  // refConclusion,
+  // validarMasaSi
+  // masas,
+  // payload,
+  // conclusionRef,
 }) => {
 
   useEffect(() => {
@@ -45,48 +57,55 @@ const MassesFormView = ({
 
   return (
     <div className="container-fluid mt-4">
-      <h4 className="fw-bold mb-3 titulo-formulario">Cuestionario</h4>
+      <h4 className="fw-bold mb-3 titulo-formulario">Datos generales</h4>
       <form onSubmit={handleSubmit} className="mi-formulario">    
+
         {/* ---------- FILA 1 FORMULARIO ---------- */}
         <div className="row mb-3">
           {/* CÓDIGO PACIENTE */}
           <div className="col-md-4">
-            <label className="form-label fw-semibold text-secondary">
+            <label htmlFor="codigo" className="form-label fw-semibold text-secondary">
               Código de paciente del estudio 
             </label>
             <input
+              id="codigo"
               name="codigo"
               type="text"
               className={`form-control ${formErrors.codigo ? "is-invalid" : ""}`}
               value={formData.codigo}
               onChange={handleChange}
               disabled={datosBloqueados}
+              aria-invalid={!!formErrors.codigo}
+              aria-describedby={formErrors.codigo ? "codigo-error" : undefined}
             />
-            <div className="invalid-feedback">{formErrors.codigo}</div>
+            <div id="codigo-error" className="invalid-feedback">{formErrors.codigo}</div>
           </div>
           {/* EDAD PACIENTE */}
           <div className="col-md-4">
-            <label className="form-label fw-semibold text-secondary">
+            <label htmlFor="edad" className="form-label fw-semibold text-secondary">
               Edad 
             </label>
             <input
+              id="edad"
               name="edad"
               type="number"
               min="0"
-              step="0.1"
               className={`form-control ${formErrors.edad ? "is-invalid" : ""}`}
               value={formData.edad}
               onChange={handleChange}
               disabled={datosBloqueados}
+              aria-invalid={!!formErrors.edad}
+              aria-describedby={formErrors.edad ? "edad-error" : undefined}
             />
-            <div className="invalid-feedback">{formErrors.edad}</div>
+            <div id="edad-error" className="invalid-feedback">{formErrors.edad}</div>
           </div>
           {/* FUR (FECHA ÚLTIMA REGLA) */}
           <div className="col-md-4">
-            <label className="form-label fw-semibold text-secondary">
+            <label htmlFor="fur" className="form-label fw-semibold text-secondary">
               FUR 
             </label>
             <input
+              id="fur"
               name="fur"
               type="date"
               className={`form-control ${formErrors.fur ? "is-invalid" : ""}`}
@@ -94,37 +113,49 @@ const MassesFormView = ({
               onChange={handleChange}
               disabled={datosBloqueados}
               max={new Date().toISOString().split("T")[0]}
+              aria-invalid={!!formErrors.fur}
+              aria-describedby={formErrors.fur ? "fur-error" : undefined}
             />
-            {formErrors.fur && <div className="invalid-feedback">{formErrors.fur}</div>}
+            {formErrors.fur && <div id="fur-error" className="invalid-feedback">{formErrors.fur}</div>}
           </div>
         </div>    
+
         {/* ---------- FILA 2 FORMULARIO ---------- */}
         <div className="row mb-3">
           {/* SIGLAS ECO */}
           <div className="col-md-4">
-            <label className="form-label fw-semibold text-secondary">
+            <label htmlFor="ecografista" className="form-label fw-semibold text-secondary">
               Siglas del ecografista 
             </label>
             <input
+              id="ecografista"
               name="ecografista"
               type="text"
               className={`form-control ${formErrors.ecografista ? "is-invalid" : ""}`}
               value={formData.ecografista}
               onChange={handleChange}
               disabled={datosBloqueados}
+              aria-invalid={!!formErrors.ecografista}
+              aria-describedby={formErrors.ecografista ? "ecografista-error" : undefined}
             />
-            <div className="invalid-feedback">{formErrors.ecografista}</div>
+            {formErrors.ecografista && (
+              <div id="ecografista-error" className="invalid-feedback">{formErrors.ecografista}</div>
+            )}
           </div>
+
           {/* HOSPITAL */}
           <div className="col-md-4">
-            <label className="form-label fw-semibold text-secondary">
+            <label htmlFor="hospital" className="form-label fw-semibold text-secondary">
               Hospital participante 
             </label>
             <select
+              id="hospital"
               name="hospital"
               className={`form-select ${formErrors.hospital ? "is-invalid" : ""}`}
               value={formData.hospital}
               onChange={handleChange}
+              aria-invalid={!!formErrors.hospital}
+              aria-describedby={formErrors.hospital ? "hospital-error" : undefined}
             >
               <option value="" disabled>
                 Seleccione una opción
@@ -132,20 +163,28 @@ const MassesFormView = ({
               <option value="hurc">Hospital Ramón y Cajal</option>
               <option value="h12o">Hospital 12 de Octubre</option>
             </select>
-            <div className="invalid-feedback">{formErrors.hospital}</div>
+            {formErrors.hospital && (
+              <div id="hospital-error" className="invalid-feedback">{formErrors.hospital}</div>
+            )}
           </div>
+
           {/* INDICACIÓN ECO */}
           <div className="col-md-4">
-            <label className="form-label fw-semibold text-secondary">
+            <label htmlFor="indicacion" className="form-label fw-semibold text-secondary">
               Indicación de ecografía 
             </label>
             <select
+              id="indicacion"
               name="indicacion"
               className={`form-select ${formErrors.indicacion ? "is-invalid" : ""}`}
-              value={formData.indicacion}
-              onChange={handleChange}
+              onChange={(e) => {
+                console.log("Seleccionaste:", e.target.value);
+                handleChange(e);
+              }}
+              aria-invalid={!!formErrors.indicacion}
+              aria-describedby={formErrors.indicacion ? "indicacion-error" : undefined}
             >
-              <option value="" disabled>
+              <option value="" disabled selected>
                 Seleccione una opción
               </option>
               <option value="dolor abdominal">Dolor abdominal</option>
@@ -154,130 +193,156 @@ const MassesFormView = ({
               <option value="hallazgo">Hallazgo accidental</option>
               <option value="otro">Otro</option>
             </select>
-            <div className="invalid-feedback">{formErrors.indicacion}</div>
+            {formErrors.indicacion && (
+              <div id="indicacion-error" className="invalid-feedback">{formErrors.indicacion}</div>
+            )}
           </div>
-        </div>    
+        </div>
 
         {/* BLOQUE DINÁMICO (INDICACIÓN DE ECOGRAFÍA) || indicacion === "no" */}
         {formData.indicacion === "otro" && (
           <div className="row mb-3">
             <div className="col-md-12 item-appear">
-              <label className="form-label fw-semibold text-secondary">
+              <label htmlFor="otraIndicacion" className="form-label fw-semibold text-secondary">
                 Otro <span className="text-danger">*</span>
               </label>
               <textarea
+                id="otraIndicacion"
                 name="otraIndicacion"
                 className={`form-control mt-2 ${formErrorsLocal.otraIndicacion ? "is-invalid" : ""}`}
                 style={{ minHeight: "80px" }}
                 value={formData.otraIndicacion || ""}
                 onChange={handleChange}
+                aria-invalid={!!formErrorsLocal.otraIndicacion}
+                aria-describedby={formErrorsLocal.otraIndicacion ? "otraIndicacion-error" : undefined}
               />
               {formErrorsLocal.otraIndicacion && (
-                <div className="text-danger mt-1">{formErrorsLocal.otraIndicacion}</div>
+                <div id="otraIndicacion-error" className="text-danger mt-1">
+                  {formErrorsLocal.otraIndicacion}
+                </div>
               )}
             </div>
           </div>
         )}
-        
+
         {/* ---------- FILA 3 FORMULARIO ---------- */}
         <div className="row mb-3">
-        {/* EXPERTO */}
-        <div className="col-md-6">
-          <label className="form-label fw-semibold text-secondary">
-            ¿Ecografista experto? 
-          </label>    
-          <div
-            className={`rounded p-2 mt-2 ${
-              formErrors.experto ? "border-danger" : "border-secondary"
-            }`}
-          >
-            {["si", "no"].map((val) => (
-              <div className="form-check" key={val}>
-                <input
-                  className="form-check-input"
-                  type="radio"
-                  name="experto"
-                  value={val}
-                  checked={formData.experto === val}
-                  onChange={handleChange}
-                  disabled={datosBloqueados}
-                />
-                <label className="form-check-label">
-                  {val === "si" ? "Sí" : "No"}
-                </label>
-              </div>
-            ))}
-          </div>    
-          {formErrors.experto && (
-            <div className="text-danger mt-1">{formErrors.experto}</div>
-          )}
-        </div>
-        {/* CENTRO DE REFERENCIA */}
-        <div className="col-md-6">
-          <label className="form-label fw-semibold text-secondary">
-            ¿Centro de referencia? 
-          </label>    
-          <div
-            className={`rounded p-2 mt-2 ${
-              formErrors.referencia ? "border-danger" : "border-secondary"
-            }`}
-          >
-            {["si", "no"].map((val) => (
-              <div className="form-check" key={val}>
-                <input
-                  className="form-check-input"
-                  type="radio"
-                  name="referencia"
-                  value={val}
-                  checked={formData.referencia === val}
-                  onChange={handleChange}
-                  disabled={datosBloqueados}
-                />
-                <label className="form-check-label">
-                  {val === "si" ? "Sí" : "No"}
-                </label>
-              </div>
-            ))}
-          </div>    
-          {formErrors.referencia && (
-            <div className="text-danger mt-1">{formErrors.referencia}</div>
-          )}
-        </div>
-        </div>      
-        {/* ---------- FILA 4 FORMULARIO ---------- */}
-        <div className="row mb-3">
-          {/* ---------- MASA ANEXIAL ---------- */}
+          {/* EXPERTO */}
           <div className="col-md-6">
-            <label className="form-label fw-semibold text-secondary">
-              ¿Hay alguna masa anexial? <span className="text-danger">*</span>
-            </label>    
-            {/* Caja con borde dinámico */}
-            <div
-              className={`rounded p-2 mt-2 ${formErrorsLocal.masa ? "border-danger" : "border-secondary"}`}
+            <fieldset 
+              className={`rounded p-2 mt-2 ${formErrors.experto ? "border-danger" : "border-secondary"}`}
+              aria-invalid={!!formErrors.experto}
+              aria-describedby={formErrors.experto ? "experto-error" : undefined}
             >
+              <legend className="form-label fw-semibold text-secondary">
+                ¿Ecografista experto?
+              </legend>
+
               {["si", "no"].map((val) => (
                 <div className="form-check" key={val}>
                   <input
-                    className="form-check-input" // <-- eliminamos el is-invalid aquí
+                    id={`experto-${val}`}
+                    className="form-check-input"
                     type="radio"
-                    name="masa"
+                    name="experto"
                     value={val}
-                    checked={formData.masa === val}
-                    onChange={handleMasaChange}
+                    checked={formData.experto === val}
+                    onChange={handleChange}
                     disabled={datosBloqueados}
                   />
-                  <label className="form-check-label ms-1">
+                  <label htmlFor={`experto-${val}`} className="form-check-label">
                     {val === "si" ? "Sí" : "No"}
                   </label>
                 </div>
               ))}
-            </div>    
-            {/* Mensaje de error */}
-            {formErrorsLocal.masa && (
-              <div className="text-danger mt-1">Este campo es obligatorio</div>
-            )}    
+            </fieldset>
+
+            {formErrors.experto && (
+              <div id="experto-error" className="text-danger mt-1">
+                {formErrors.experto}
+              </div>
+            )}
           </div>
-        </div>    
+          {/* CENTRO DE REFERENCIA */}
+          <div className="col-md-6">
+            <fieldset 
+              className={`rounded p-2 mt-2 ${formErrors.referencia ? "border-danger" : "border-secondary"}`}
+              aria-invalid={!!formErrors.referencia}
+              aria-describedby={formErrors.referencia ? "referencia-error" : undefined}
+            >
+              <legend className="form-label fw-semibold text-secondary">
+                ¿Centro de referencia?
+              </legend>
+
+              {["si", "no"].map((val) => (
+                <div className="form-check" key={val}>
+                  <input
+                    id={`referencia-${val}`}
+                    className="form-check-input"
+                    type="radio"
+                    name="referencia"
+                    value={val}
+                    checked={formData.referencia === val}
+                    onChange={handleChange}
+                    disabled={datosBloqueados}
+                  />
+                  <label htmlFor={`referencia-${val}`} className="form-check-label">
+                    {val === "si" ? "Sí" : "No"}
+                  </label>
+                </div>
+              ))}
+            </fieldset>
+
+            {formErrors.referencia && (
+              <div id="referencia-error" className="text-danger mt-1">
+                {formErrors.referencia}
+              </div>
+            )}
+          </div>
+        </div>      
+
+        {/* ---------- FILA 4 FORMULARIO ---------- */}
+        <div className="row mb-3">
+          {/* ---------- MASA ANEXIAL ---------- */}
+          <div className="col-md-6">
+            <fieldset
+              className={`rounded p-2 mt-2 border ${
+                formErrorsLocal.masa ? "border-danger" : "border-secondary"
+              }`}
+              aria-invalid={!!formErrorsLocal.masa}
+              aria-describedby={formErrorsLocal.masa ? "masa-error" : undefined}
+            >
+              <legend className="form-label fw-semibold text-secondary">
+                ¿Hay alguna masa anexial? <span className="text-danger">*</span>
+              </legend>
+
+              {["si", "no"].map((val) => (
+                <div className="form-check" key={val}>
+                  <input
+                    className="form-check-input"
+                    type="radio"
+                    name="masa"
+                    value={val}
+                    checked={formData.masa === val}
+                    onChange={(e) => handleConditionalChange("masa", e.target.value, ["informeMasa", "informeOvario"])} 
+                    disabled={datosBloqueados}
+                    id={`masa-${val}`}
+                  />
+                  <label className="form-check-label ms-1" htmlFor={`masa-${val}`}>
+                    {val === "si" ? "Sí" : "No"}
+                  </label>
+                </div>
+              ))}
+            </fieldset>
+
+            {formErrorsLocal.masa && (
+              <div id="masa-error" className="text-danger mt-1">
+                Este campo es obligatorio
+              </div>
+            )}
+          </div>
+        </div>  
+
         {/* BLOQUE DINÁMICO -> masa === "si" */}
         {formData.masa === "si" && (
           <div
@@ -289,25 +354,40 @@ const MassesFormView = ({
             INFORME DE LA MASA ANEXIAL
             {masaIndexVisible > 1 && ` #${masaIndexVisible}`}
           </h5>   
+
             {/* Subcaja 1: datos generales de la masa anexial */}
             <div className="p-3">
-              <div className="row"> {/* Fila 1 */}
+
+              {/* ---------- ROW - Localización / Estructura ---------- */}
+              <div className="row">
+
                 {/* LOCALIZACIÓN MASA */}
                 <div className="col-md-6">
-                  <label className="form-label fw-semibold text-secondary">
+                  <label
+                    htmlFor="localizacion"
+                    className="form-label fw-semibold text-secondary"
+                  >
                     ¿Dónde está localizada? <span className="text-danger">*</span>
                   </label>
+
                   <select
+                    id="localizacion"
                     name="localizacion"
-                    className={`form-select ${formErrorsLocal.localizacion ? "is-invalid" : ""}`}
+                    className={`form-select ${
+                      formErrorsLocal.localizacion ? "is-invalid" : ""
+                    }`}
                     value={formData.localizacion}
                     onChange={(e) => {
                       handleChange(e);
-                      setFormErrorsLocal(prev => {
-                        const { localizacion, ...rest } = prev; // elimina error si estaba
+                      setFormErrorsLocal((prev) => {
+                        const { localizacion, ...rest } = prev;
                         return rest;
                       });
                     }}
+                    aria-invalid={!!formErrorsLocal.localizacion}
+                    aria-describedby={
+                      formErrorsLocal.localizacion ? "localizacion-error" : undefined
+                    }
                   >
                     <option value="" disabled>
                       Seleccione una opción
@@ -316,119 +396,145 @@ const MassesFormView = ({
                     <option value="izquierda">Izquierda</option>
                     <option value="bilateral">Indefinido</option>
                   </select>
+
                   {formErrorsLocal.localizacion && (
-                    <div className="text-danger mt-1">{formErrorsLocal.localizacion}</div>
+                    <div id="localizacion-error" className="text-danger mt-1">
+                      {formErrorsLocal.localizacion}
+                    </div>
                   )}
                 </div>
+
                 {/* ESTRUCTURA MASA */}
                 <div className="col-md-6">
-                  <label className="form-label fw-semibold text-secondary">
+                  <label
+                    htmlFor="estructura"
+                    className="form-label fw-semibold text-secondary"
+                  >
                     ¿De qué estructura depende? <span className="text-danger">*</span>
                   </label>
+
                   <select
+                    id="estructura"
                     name="estructura"
-                    className={`form-select ${formErrorsLocal.estructura ? "is-invalid" : ""}`}
+                    className={`form-select ${
+                      formErrorsLocal.estructura ? "is-invalid" : ""
+                    }`}
                     value={formData.estructura}
                     onChange={(e) => {
                       handleChange(e);
-                      setFormErrorsLocal(prev => {
-                        const { estructura, ...rest } = prev; // elimina error si se rellena
+                      setFormErrorsLocal((prev) => {
+                        const { estructura, ...rest } = prev;
                         return rest;
                       });
                     }}
+                    aria-invalid={!!formErrorsLocal.estructura}
+                    aria-describedby={
+                      formErrorsLocal.estructura ? "estructura-error" : undefined
+                    }
                   >
-                    <option value="" disabled>Seleccione una opción</option>
+                    <option value="" disabled>
+                      Seleccione una opción
+                    </option>
                     <option value="ovario">Ovario</option>
                     <option value="trompa">Trompa</option>
                     <option value="paraovario">Paraovario</option>
                     <option value="indefinido">Indefinido</option>
                   </select>
+
                   {formErrorsLocal.estructura && (
-                    <div className="text-danger mt-1">{formErrorsLocal.estructura}</div>
+                    <div id="estructura-error" className="text-danger mt-1">
+                      {formErrorsLocal.estructura}
+                    </div>
                   )}
                 </div>
-              </div>    
-              <div className="row mt-4"> {/* Fila 2 */}
+              </div>
+
+              {/* ---------- ROW - Tipo lesión / Aspectos relacionados con el tipo de lesión ---------- */}
+              <div className="row mt-4">
+                
                 {/* TIPO LESIÓN */}
                 <div className="col-md-6">
-                  <label className="form-label fw-semibold text-secondary">
+                  <label htmlFor="tipoLesion" className="form-label fw-semibold text-secondary">
                     ¿Qué tipo de lesión es? <span className="text-danger">*</span>
                   </label>
                   <select
+                    id="tipoLesion"
                     name="tipoLesion"
-                    className={`form-select ${
-                      formErrorsLocal.tipoLesion ? "is-invalid" : ""
-                    }`}
+                    className={`form-select ${formErrorsLocal.tipoLesion ? "is-invalid" : ""}`}
                     value={formData.tipoLesion}
-                    onChange={handleChange}
+                    onChange={handleTipoLesionChange}
+                    aria-invalid={!!formErrorsLocal.tipoLesion}
+                    aria-describedby={formErrorsLocal.tipoLesion ? "tipoLesion-error" : undefined}
                   >
-                    <option value="" disabled>
-                      Seleccione una opción
-                    </option>
+                    <option value="" disabled>Seleccione una opción</option>
                     <option value="solido">Sólido</option>
                     <option value="quistica">Quística</option>
                     <option value="solido-quistica">Sólido-quística</option>
                   </select>
                   {formErrorsLocal.tipoLesion && (
-                    <div className="text-danger mt-1">
+                    <div id="tipoLesion-error" className="text-danger mt-1">
                       {formErrorsLocal.tipoLesion}
                     </div>
                   )}
-                </div>    
+                </div>
+  
+                {/* ---------- ROW - Según el tipo de lesión ---------- */}
+
                 {/* BLOQUE DINÁMICO (TIPO LESIÓN) || tipoLesion === "solido" */}
                 {formData.tipoLesion === "solido" && (
-                <div className="mt-4 row item-appear">
-                  {/* CONTORNO EXTERNO */}
-                  <div className="col-md-6">
-                    <label className="form-label fw-semibold text-secondary">
-                      ¿Cómo es el contorno externo? <span className="text-danger">*</span>
-                    </label>
-                    <select
-                      name="contornoExterno"
-                      className={`form-select ${
-                        formErrorsLocal.contornoExterno ? "is-invalid" : ""
-                      }`}
-                      value={formData.contornoExterno}
-                      onChange={handleChange}
-                    >
-                      <option value="" disabled>
-                        Seleccione una opción
-                      </option>
-                      <option value="regular">Regular</option>
-                      <option value="irregular">Irregular</option>
-                    </select>
-                    {formErrorsLocal.contornoExterno && (
-                      <div className="text-danger mt-1">
-                        {formErrorsLocal.contornoExterno}
-                      </div>
-                    )}
+                  <div className="mt-4 row item-appear">
+                    {/* CONTORNO EXTERNO */}
+                    <div className="col-md-6">
+                      <label htmlFor="contornoExterno" className="form-label fw-semibold text-secondary">
+                        ¿Cómo es el contorno externo? <span className="text-danger">*</span>
+                      </label>
+                      <select
+                        id="contornoExterno"
+                        name="contornoExterno"
+                        className={`form-select ${formErrorsLocal.contornoExterno ? "is-invalid" : ""}`}
+                        value={formData.contornoExterno}
+                        onChange={handleChange}
+                        aria-invalid={!!formErrorsLocal.contornoExterno}
+                        aria-describedby={formErrorsLocal.contornoExterno ? "contornoExterno-error" : undefined}
+                      >
+                        <option value="" disabled>Seleccione una opción</option>
+                        <option value="regular">Regular</option>
+                        <option value="irregular">Irregular</option>
+                      </select>
+                      {formErrorsLocal.contornoExterno && (
+                        <div id="contornoExterno-error" className="text-danger mt-1">
+                          {formErrorsLocal.contornoExterno}
+                        </div>
+                      )}
+                    </div>
+
+                    {/* GRADO VASCULARIZACIÓN */}
+                    <div className="col-md-6">
+                      <label htmlFor="vascularizacion" className="form-label fw-semibold text-secondary">
+                        ¿Cuál es el grado de la vascularización? <span className="text-danger">*</span>
+                      </label>
+                      <select
+                        id="vascularizacion"
+                        name="vascularizacion"
+                        className={`form-select ${formErrorsLocal.vascularizacion ? "is-invalid" : ""}`}
+                        value={formData.vascularizacion}
+                        onChange={handleChange}
+                        aria-invalid={!!formErrorsLocal.vascularizacion}
+                        aria-describedby={formErrorsLocal.vascularizacion ? "vascularizacion-error" : undefined}
+                      >
+                        <option value="" disabled>Seleccione una opción</option>
+                        <option value="ninguno (score color 1)">Ninguno (score color 1)</option>
+                        <option value="leve (score color 2)">Leve (score color 2)</option>
+                        <option value="moderado (score color 3)">Moderado (score color 3)</option>
+                        <option value="abundante (score color 4)">Abundante (score color 4)</option>
+                      </select>
+                      {formErrorsLocal.vascularizacion && (
+                        <div id="vascularizacion-error" className="text-danger mt-1">
+                          {formErrorsLocal.vascularizacion}
+                        </div>
+                      )}
+                    </div>
                   </div>
-                  {/* GRADO VASCULARIZACIÓN */}
-                  <div className="col-md-6">
-                    <label className="form-label fw-semibold text-secondary">
-                      ¿Cuál es el grado de la vascularización? <span className="text-danger">*</span>
-                    </label>
-                    <select
-                      name="vascularizacion"
-                      className={`form-select ${
-                        formErrorsLocal.vascularizacion ? "is-invalid" : ""
-                      }`}
-                      value={formData.vascularizacion}
-                      onChange={handleChange}
-                    >
-                      <option value="" disabled>Seleccione una opción</option>
-                      <option value="ninguno (score color 1)">Ninguno (score color 1)</option>
-                      <option value="leve (score color 2)">Leve (score color 2)</option>
-                      <option value="moderado (score color 3)">Moderado (score color 3)</option>
-                      <option value="abundante (score color 4)">Abundante (score color 4)</option>
-                    </select>
-                    {formErrorsLocal.vascularizacion && (
-                      <div className="text-danger mt-1">
-                        {formErrorsLocal.vascularizacion}
-                      </div>
-                    )}
-                  </div>
-                </div>
                 )}    
                 {/* BLOQUE DINÁMICO (TIPO LESIÓN) || tipoLesion === "quistica" */}
                 {(formData.tipoLesion === "quistica" || formData.tipoLesion === "solido-quistica") && (
@@ -436,10 +542,11 @@ const MassesFormView = ({
                     <div className="mt-4 row">
                       {/* GROSOR PARED */}
                       <div className="col-md-6">
-                        <label className="form-label fw-semibold text-secondary">
+                        <label htmlFor="grosorPared" className="form-label fw-semibold text-secondary">
                           ¿Cuál es el grosor de la pared? (mm) <span className="text-danger">*</span>
                         </label>
                         <input
+                          id="grosorPared"
                           name="grosorPared"
                           type="number"
                           min="0"
@@ -447,66 +554,83 @@ const MassesFormView = ({
                           className={`form-control ${formErrorsLocal.grosorPared ? "is-invalid" : ""}`}
                           value={formData.grosorPared}
                           onChange={handleChange}
+                          aria-invalid={!!formErrorsLocal.grosorPared}
+                          aria-describedby={formErrorsLocal.grosorPared ? "grosorPared-error" : undefined}
                         />
                         {formErrorsLocal.grosorPared && (
-                          <div className="text-danger mt-1">{formErrorsLocal.grosorPared}</div>
+                          <div id="grosorPared-error" className="text-danger mt-1">
+                            {formErrorsLocal.grosorPared}
+                          </div>
                         )}
                       </div>
+
                       {/* GRADO VASCULARIZACIÓN PARED */}
                       <div className="col-md-6">
-                        <label className="form-label fw-semibold text-secondary">
+                        <label htmlFor="gradoVascularizacionPared" className="form-label fw-semibold text-secondary">
                           ¿Cuál es el grado de la vascularización de la pared? <span className="text-danger">*</span>
                         </label>
                         <select
+                          id="gradoVascularizacionPared"
                           name="gradoVascularizacionPared"
                           className={`form-select ${formErrorsLocal.gradoVascularizacionPared ? "is-invalid" : ""}`}
                           value={formData.gradoVascularizacionPared || ""}
                           onChange={handleChange}
+                          aria-invalid={!!formErrorsLocal.gradoVascularizacionPared}
+                          aria-describedby={formErrorsLocal.gradoVascularizacionPared ? "gradoVascularizacionPared-error" : undefined}
                         >
                           <option value="" disabled>Seleccione una opción</option>
                           <option value="ninguno (score color 1)">Ninguno (score color 1)</option>
                           <option value="leve (score color 2)">Leve (score color 2)</option>
                           <option value="moderado (score color 3)">Moderado (score color 3)</option>
                           <option value="abundante (score color 4)">Abundante (score color 4)</option>
-                        </select>   
+                        </select>
                         {formErrorsLocal.gradoVascularizacionPared && (
-                          <div className="text-danger mt-1">{formErrorsLocal.gradoVascularizacionPared}</div>
+                          <div id="gradoVascularizacionPared-error" className="text-danger mt-1">
+                            {formErrorsLocal.gradoVascularizacionPared}
+                          </div>
                         )}
                       </div>
                     </div>    
+
                     <div className="mt-4 row">
                       {/* CONTORNO INTERNO */}
                       <div className="col-md-6">
-                        <label className="form-label fw-semibold text-secondary">
+                        <label htmlFor="contornoInterno" className="form-label fw-semibold text-secondary">
                           ¿Cómo es el contorno interno? <span className="text-danger">*</span>
                         </label>
                         <select
+                          id="contornoInterno"
                           name="contornoInterno"
                           className={`form-select ${formErrorsLocal.contornoInterno ? "is-invalid" : ""}`}
                           value={formData.contornoInterno || ""}
                           onChange={handleChange}
+                          aria-invalid={!!formErrorsLocal.contornoInterno}
+                          aria-describedby={formErrorsLocal.contornoInterno ? "contornoInterno-error" : undefined}
                         >
-                          <option value="" disabled>
-                            Seleccione una opción
-                          </option>
+                          <option value="" disabled>Seleccione una opción</option>
                           <option value="regular">Regular</option>
                           <option value="irregular">Irregular</option>
                         </select>   
                         {formErrorsLocal.contornoInterno && (
-                          <div className="text-danger mt-1">{formErrorsLocal.contornoInterno}</div>
+                          <div id="contornoInterno-error" className="text-danger mt-1">
+                            {formErrorsLocal.contornoInterno}
+                          </div>
                         )}
                       </div>
+
                       {/* Columna vacía para mantener la alineación */}
                       <div className="col-md-6"></div>
                     </div>
                   </div>
                 )}    
               </div>
-              
+
+              {/* ---------- ROW - Tipo de contenido ---------- */}
               <div className="row mt-4">    
+
                 {/* TIPO CONTENIDO */}
                 <div className="col-md-6">
-                  <label className="form-label fw-semibold text-secondary">
+                  <label htmlFor="contenido" className="form-label fw-semibold text-secondary">
                     ¿Qué contenido tiene? <span className="text-danger">*</span>
                   </label>
                   <select
@@ -514,32 +638,44 @@ const MassesFormView = ({
                     className={`form-select ${formErrorsLocal.contenido ? "is-invalid" : ""}`}
                     value={formData.contenido}
                     onChange={(e) => {
-                      handleChange(e);
+                      const value = e.target.value;
+                      
+                      // Actualizamos el select
+                      setFormData(prev => ({
+                        ...prev,
+                        contenido: value,
+                        // Si no es 'otro', limpiamos el campo dependiente
+                        ...(value !== "otro" ? { otroContenido: "" } : {})
+                      }));
+
+                      // Limpiamos errores
                       setFormErrorsLocal(prev => {
-                        const { contenido, ...rest } = prev; // elimina el error al rellenar
+                        const { contenido, otroContenido, ...rest } = prev;
                         return rest;
                       });
                     }}
                   >
-                    <option value="" disabled>
-                      Seleccione una opción
-                    </option>
+                    <option value="" disabled>Seleccione una opción</option>
                     <option value="sonoluscente">Sonoluscente</option>
                     <option value="ecomixto">Ecomixto</option>
                     <option value="en vidrio esmerilado">En vidrio esmerilado</option>
                     <option value="otro">Otro</option>
                   </select>   
                   {formErrorsLocal.contenido && (
-                    <div className="text-danger mt-1">{formErrorsLocal.contenido}</div>
+                    <div id="contenido-error" className="text-danger mt-1">{formErrorsLocal.contenido}</div>
                   )}
                 </div>    
+
+                {/* ---------- ROW - Según el tipo de contenido ---------- */}
+                
                 {/* BLOQUE DINÁMICO (OTRO CONTENIDO) || contenido === "otro" */}
                 {formData.contenido === "otro" && (
                   <div className="mt-4 item-appear">
-                    <label className="form-label fw-semibold text-secondary">
+                    <label htmlFor="otroContenido" className="form-label fw-semibold text-secondary">
                       Otro <span className="text-danger">*</span>
                     </label>
                     <textarea
+                      id="otroContenido"
                       name="otroContenido"
                       className={`form-control mt-2 ${formErrorsLocal.otroContenido ? "is-invalid" : ""}`}
                       style={{ minHeight: "80px" }}
@@ -547,164 +683,182 @@ const MassesFormView = ({
                       onChange={(e) => {
                         handleChange(e);
                         setFormErrorsLocal(prev => {
-                          const { otroContenido, ...rest } = prev; // elimina error si se rellena
+                          const { otroContenido, ...rest } = prev; 
                           return rest;
                         });
                       }}
+                      aria-invalid={!!formErrorsLocal.otroContenido}
+                      aria-describedby={formErrorsLocal.otroContenido ? "otroContenido-error" : undefined}
                     ></textarea>
                     {formErrorsLocal.otroContenido && (
-                      <div className="text-danger mt-1">{formErrorsLocal.otroContenido}</div>
+                      <div id="otroContenido-error" className="text-danger mt-1">{formErrorsLocal.otroContenido}</div>
                     )}
                   </div>
                 )}
-              </div>    
-            </div>    
-            {/* BLOQUE MEDIDA MASA ANEXIAL */}
-            <div className="p-3">
-              <h5 className="fw-semibold mb-3 titulo-formulario">
-                ¿Cuánto mide? {" "}
-                <text className="little-text">
-                  (Redondee hasta el número entero que considere)
-                </text>
-              </h5>
-              <div className="row">
-                {["T", "AP", "L"].map((eje) => (
-                  <div className="col-md-4" key={eje}>
-                    <label className="form-label fw-semibold text-secondary">
-                      Medida ({eje}) del POS (mm) <span className="text-danger">*</span>
-                    </label>
-                    <input
-                      name={`medida${eje}`}
-                      type="number"
-                      min="0"
-                      step="0.1"
-                      className={`form-control ${
-                        formErrorsLocal[`medida${eje}`] ? "is-invalid" : ""
-                      }`}
-                      value={formData[`medida${eje}`] ?? ""}
-                      onChange={(e) => {
-                        handleChange(e);
-                        // eliminar el error específico cuando se rellena
-                        setFormErrorsLocal(prev => {
-                          const { [`medida${eje}`]: _omit, ...rest } = prev;
-                          return rest;
-                        });
-                      }}
-                    />
-                    {formErrorsLocal[`medida${eje}`] && (
-                      <div className="text-danger mt-1">
-                        {formErrorsLocal[`medida${eje}`]}
-                      </div>
-                    )}
-                  </div>
-                ))}
               </div>
             </div>    
+
+            {/* MEDIDA MASA ANEXIAL */}
+            <div className="p-3">
+              <fieldset className="fw-semibold mb-3 titulo-formulario">
+                ¿Cuánto mide? 
+                <span className="little-text"> (Redondee hasta el número entero que considere)</span>
+              </fieldset>
+              <fieldset>
+                <div className="row">
+                  {["T", "AP", "L"].map((eje) => {
+                    const fieldName = `medida${eje}`;
+                    const fieldId = `medida${eje}-id`;
+                    const errorId = `${fieldId}-error`;
+                    return (
+                      <div className="col-md-4" key={eje}>
+                        <label htmlFor={fieldId} className="form-label fw-semibold text-secondary">
+                          Medida ({eje}) del POS (mm) <span className="text-danger">*</span>
+                        </label>
+                        <input
+                          id={fieldId}
+                          name={fieldName}
+                          type="number"
+                          min="0"
+                          step="0.1"
+                          className={`form-control ${formErrorsLocal[fieldName] ? "is-invalid" : ""}`}
+                          value={formData[fieldName] ?? ""}
+                          onChange={handleChange}
+                          aria-required="true"
+                          aria-invalid={!!formErrorsLocal[fieldName]}
+                          aria-describedby={formErrorsLocal[fieldName] ? errorId : undefined}
+                        />
+                        {formErrorsLocal[fieldName] && (
+                          <div id={errorId} role="alert" className="text-danger mt-1">
+                            {formErrorsLocal[fieldName]}
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              </fieldset>
+            </div>
+
             {/* BLOQUE DINÁMICO (PAPILAS) || tipoLesion === "quistica"/"solido-quistica" */}
             {(formData.tipoLesion === "quistica" || formData.tipoLesion === "solido-quistica" || formErrorsLocal.papilas) && (
               <div className="p-3 item-appear">
                 {/* PAPILAS */}
                 <div className="mb-3">
                   <h5 className="fw-semibold text-uppercase mb-2 titulo-formulario">PAPILAS</h5>
-                  <label className="form-label fw-semibold text-secondary d-block mb-2">
-                    ¿Hay papilas? <span className="text-danger">*</span>
-                  </label>
-                  <div className={`rounded bg-white p-3 w-100 ${formErrorsLocal.papilas ? "border border-danger" : "border border-secondary"}`}>
-                    {["si", "no"].map((opt) => (
-                      <div className="form-check mb-2" key={opt}>
-                        <input
-                          className="form-check-input"
-                          type="radio"
-                          name="papilas"
-                          value={opt}
-                          checked={formData.papilas === opt}
-                          onChange={(e) => handleChange(e)}
-                        />
-                        <label className="form-check-label">{opt === "si" ? "Sí" : "No"}</label>
+                  <fieldset className={`rounded bg-white p-3 w-100 ${formErrorsLocal.papilas ? "border border-danger" : "border border-secondary"}`}>
+                    <legend className="form-label fw-semibold text-secondary mb-2">
+                      ¿Hay papilas? <span className="text-danger">*</span>
+                    </legend>
+                    {["si", "no"].map((opt) => {
+                      const radioId = `papilas-${opt}`;
+                      return (
+                        <div className="form-check mb-2" key={opt}>
+                          <input
+                            id={radioId}
+                            className="form-check-input"
+                            type="radio"
+                            name="papilas"
+                            value={opt}
+                            checked={formData.papilas === opt}
+                            onChange={handlePapilasChange} // ✅ aquí usamos la función correcta
+                            aria-invalid={!!formErrorsLocal.papilas}
+                            aria-describedby={formErrorsLocal.papilas ? "papilas-error" : undefined}
+                          />
+                          <label className="form-check-label" htmlFor={radioId}>
+                            {opt === "si" ? "Sí" : "No"}
+                          </label>
+                        </div>
+                      );
+                    })}
+                    {formErrorsLocal.papilas && (
+                      <div id="papilas-error" className="text-danger mt-1" role="alert">
+                        {formErrorsLocal.papilas}
                       </div>
-                    ))}
-                  </div>
-                  {formErrorsLocal.papilas && (
-                    <div className="text-danger mt-1">{formErrorsLocal.papilas}</div>
-                  )}
+                    )}
+                  </fieldset>
                 </div>
               </div>
-            )}    
-            {/* INFO DE PAPILAS (solo si papilas === "si" o hay errores en los campos de papilas) */}
-            {(
-              formData.papilas === "si" ||
-              ["numeroPapilas", "contornoPapilas", "vascularizacionPapilas", "medidaPapilasT", "medidaPapilasAP"]
-                .some(f => formErrorsLocal[f])
-            ) && (
-              <div className="item-appear w-100 p-3 mb-2">    
-                {/* FILA 1: NumeroPapilas y ContornoPapilas */}
+            )}
+
+            {/* INFO DE PAPILAS (solo si papilas === "si" o hay errores) */}
+            {(formData.papilas === "si" || ["numeroPapilas", "contornoPapilas", "vascularizacionPapilas", "medidaPapilasT", "medidaPapilasAP"].some(f => formErrorsLocal[f])) && (
+              <fieldset className="item-appear w-100 p-3 mb-2" aria-describedby="papilas-legend">
+                <legend id="papilas-legend" className="fw-bold mb-3">Información sobre las papilas</legend>
+
                 <div className="row g-3 mb-3">
                   {/* Número de Papilas */}
                   <div className="col-md-6 d-flex flex-column">
-                    <label className="form-label fw-semibold text-secondary">
+                    <label id="label-numeroPapilas" className="form-label fw-semibold text-secondary" htmlFor="numeroPapilas">
                       ¿Cuántas papilas hay? <span className="text-danger">*</span>
                     </label>
                     <input
-                      type="number"
+                      id="numeroPapilas"
                       name="numeroPapilas"
+                      type="number"
                       min="0"
+                      required
+                      aria-required="true"
+                      aria-labelledby="label-numeroPapilas"
+                      aria-describedby={formErrorsLocal.numeroPapilas ? "error-numeroPapilas" : undefined}
+                      aria-invalid={!!formErrorsLocal.numeroPapilas}
                       className={`form-control ${formErrorsLocal.numeroPapilas ? "is-invalid" : ""}`}
                       value={formData.numeroPapilas || ""}
-                      onChange={(e) => {
-                        handleChange(e);
-                        setFormErrorsLocal(prev => {
-                          const { numeroPapilas, ...rest } = prev;
-                          return rest;
-                        });
-                      }}
+                      onChange={handlePapilasChange} // ✅ aquí también
                     />
                     {formErrorsLocal.numeroPapilas && (
-                      <div className="text-danger mt-1">{formErrorsLocal.numeroPapilas}</div>
+                      <div id="error-numeroPapilas" role="alert" className="text-danger mt-1">
+                        {formErrorsLocal.numeroPapilas}
+                      </div>
                     )}
-                  </div>    
+                  </div>
+
                   {/* Contorno Papilas */}
                   <div className="col-md-6 d-flex flex-column">
-                    <label className="form-label fw-semibold text-secondary">
+                    <label id="label-contornoPapilas" className="form-label fw-semibold text-secondary" htmlFor="contornoPapilas">
                       ¿Cómo es el contorno de las papilas? <span className="text-danger">*</span>
                     </label>
                     <select
+                      id="contornoPapilas"
                       name="contornoPapilas"
+                      required
+                      aria-required="true"
+                      aria-labelledby="label-contornoPapilas"
+                      aria-describedby={formErrorsLocal.contornoPapilas ? "error-contornoPapilas" : undefined}
+                      aria-invalid={!!formErrorsLocal.contornoPapilas}
                       className={`form-select ${formErrorsLocal.contornoPapilas ? "is-invalid" : ""}`}
                       value={formData.contornoPapilas || ""}
-                      onChange={(e) => {
-                        handleChange(e);
-                        setFormErrorsLocal(prev => {
-                          const { contornoPapilas, ...rest } = prev;
-                          return rest;
-                        });
-                      }}
+                      onChange={handlePapilasChange}
                     >
                       <option value="" disabled>Seleccione una opción</option>
                       <option value="regular">Regular</option>
                       <option value="irregular">Irregular</option>
                     </select>
                     {formErrorsLocal.contornoPapilas && (
-                      <div className="text-danger mt-1">{formErrorsLocal.contornoPapilas}</div>
+                      <div id="error-contornoPapilas" role="alert" className="text-danger mt-1">
+                        {formErrorsLocal.contornoPapilas}
+                      </div>
                     )}
                   </div>
-                </div>    
-                {/* FILA 2: Grado de vascularización de papilas */}
+                </div>
+
+                {/* Grado de vascularización */}
                 <div className="row g-3 mb-3">
                   <div className="col-md-6 d-flex flex-column">
-                    <label className="form-label fw-semibold text-secondary">
+                    <label id="label-vascularPapilas" className="form-label fw-semibold text-secondary" htmlFor="vascularizacionPapilas">
                       ¿Cuál es el grado de la vascularización de las papilas? <span className="text-danger">*</span>
                     </label>
                     <select
+                      id="vascularizacionPapilas"
                       name="vascularizacionPapilas"
+                      required
+                      aria-required="true"
+                      aria-labelledby="label-vascularPapilas"
+                      aria-describedby={formErrorsLocal.vascularizacionPapilas ? "error-vascularPapilas" : undefined}
+                      aria-invalid={!!formErrorsLocal.vascularizacionPapilas}
                       className={`form-select ${formErrorsLocal.vascularizacionPapilas ? "is-invalid" : ""}`}
                       value={formData.vascularizacionPapilas || ""}
-                      onChange={(e) => {
-                        handleChange(e);
-                        setFormErrorsLocal(prev => {
-                          const { vascularizacionPapilas, ...rest } = prev;
-                          return rest;
-                        });
-                      }}
+                      onChange={handlePapilasChange}
                     >
                       <option value="" disabled>Seleccione una opción</option>
                       <option value="ninguno (score color 1)">Ninguno (score color 1)</option>
@@ -713,110 +867,134 @@ const MassesFormView = ({
                       <option value="abundante (score color 4)">Abundante (score color 4)</option>
                     </select>
                     {formErrorsLocal.vascularizacionPapilas && (
-                      <div className="text-danger mt-1">{formErrorsLocal.vascularizacionPapilas}</div>
+                      <div id="error-vascularPapilas" role="alert" className="text-danger mt-1">
+                        {formErrorsLocal.vascularizacionPapilas}
+                      </div>
                     )}
                   </div>
-                </div>    
-                {/* FILA 3: Medidas del POS */}
+                </div>
+
+                {/* Medidas Papilas */}
                 <div className="mt-3">
-                  <h5 className="fw-semibold mb-3 titulo-formulario">
-                    ¿Cuánto mide la papila mayor? <text className="little-text">(Redondee hasta el número entero que considere)</text>
-                  </h5>
+                  <fieldset className="fw-semibold mb-3 titulo-formulario">
+                    ¿Cuánto mide la papila mayor?
+                    <span className="little-text"> (Redondee hasta el número entero que considere)</span>
+                  </fieldset>
                   <div className="row g-3">
-                    {["T","AP"].map((eje) => (
+                    {["T", "AP"].map((eje) => (
                       <div className="col-md-4 d-flex flex-column" key={eje}>
-                        <label className="form-label fw-semibold text-secondary">
+                        <label id={`label-medidaPapilas${eje}`} className="form-label fw-semibold text-secondary" htmlFor={`medidaPapilas${eje}`}>
                           Medida ({eje}) de la papila (mm) <span className="text-danger">*</span>
                         </label>
                         <input
+                          id={`medidaPapilas${eje}`}
                           name={`medidaPapilas${eje}`}
                           type="number"
                           min="0"
                           step="0.1"
+                          required
+                          aria-required="true"
+                          aria-labelledby={`label-medidaPapilas${eje}`}
+                          aria-describedby={formErrorsLocal[`medidaPapilas${eje}`] ? `error-medidaPapilas${eje}` : undefined}
+                          aria-invalid={!!formErrorsLocal[`medidaPapilas${eje}`]}
                           className={`form-control ${formErrorsLocal[`medidaPapilas${eje}`] ? "is-invalid" : ""}`}
                           value={formData[`medidaPapilas${eje}`] || ""}
-                          onChange={(e) => {
-                            handleChange(e);
-                            setFormErrorsLocal(prev => {
-                              const { [`medidaPapilas${eje}`]: _, ...rest } = prev;
-                              return rest;
-                            });
-                          }}
+                          onChange={handlePapilasChange}
                         />
                         {formErrorsLocal[`medidaPapilas${eje}`] && (
-                          <div className="text-danger mt-1">{formErrorsLocal[`medidaPapilas${eje}`]}</div>
+                          <div id={`error-medidaPapilas${eje}`} role="alert" className="text-danger mt-1">
+                            {formErrorsLocal[`medidaPapilas${eje}`]}
+                          </div>
                         )}
                       </div>
                     ))}
                   </div>
-                </div>    
-              </div>
-            )}    
+                </div>
+              </fieldset>
+            )}
+
             {/* BLOQUE DINÁMICO (TABIQUES) || tipoLesion === "quistica"/"solido-quistica" */}
             {(formData.tipoLesion === "quistica" || formData.tipoLesion === "solido-quistica") && (
               <div className="p-3 item-appear">
-                {/* Tabiques */}
-                <div>
-                  <h5 className="fw-semibold text-uppercase mb-2 titulo-formulario">
-                    TABIQUES
-                  </h5>
-                  <label className="form-label fw-semibold text-secondary d-block mb-2">
+                <h5 className="fw-semibold text-uppercase mb-2 titulo-formulario">TABIQUES</h5>
+                <fieldset
+                  className={`rounded bg-white p-3 w-100 ${
+                    formErrorsLocal.tabiques ? "border border-danger" : "border border-secondary"
+                  }`}
+                  aria-describedby={formErrorsLocal.tabiques ? "tabiques-error" : undefined}
+                >
+                  <p className="form-label fw-semibold text-secondary mb-2">
                     ¿Hay tabiques? <span className="text-danger">*</span>
-                  </label>
-                  <div
-                    className={`rounded bg-white p-3 w-100 ${
-                      formErrorsLocal.tabiques ? "border-danger" : "border-secondary"
-                    }`}
-                  >
-                    {["si", "no"].map((opt) => (
+                  </p>
+
+                  {["si", "no"].map((opt) => {
+                    const radioId = `tabiques-${opt}`;
+                    return (
                       <div className="form-check mb-2" key={opt}>
                         <input
+                          id={radioId}
                           className="form-check-input"
                           type="radio"
                           name="tabiques"
                           value={opt}
                           checked={formData.tabiques === opt}
-                          onChange={handleChange}
+                          onChange={handleTabiquesChange}
+                          aria-invalid={!!formErrorsLocal.tabiques}
                         />
-                        <label className="form-check-label">
+                        <label className="form-check-label" htmlFor={radioId}>
                           {opt === "si" ? "Sí" : "No"}
                         </label>
                       </div>
-                    ))}
-                  </div>
+                    );
+                  })}
+
                   {formErrorsLocal.tabiques && (
-                    <div className="text-danger mt-1">{formErrorsLocal.tabiques}</div>
+                    <div id="tabiques-error" role="alert" className="text-danger mt-1">
+                      {formErrorsLocal.tabiques}
+                    </div>
                   )}
-                </div>
+                </fieldset>
               </div>
-            )}    
+            )}
+
             {/* BLOQUE DINÁMICO (INFO DE TABIQUES) || tabiques === "si" */}
             {formData.tabiques === "si" && (
-              <div className="item-appear w-100 p-3 mb-2"> {/* forzamos ancho del padre y padding controlado */}    
-                <div className="row g-3 mb-0"> {/* fila 1: nro lóculos + grosor */}
+              <fieldset className="item-appear w-100 p-3 mb-2">
+                <legend className="fw-bold mb-3">
+                  Información sobre los tabiques
+                </legend>
+
+                {/* FILA 1 */}
+                <div className="row g-3 mb-2">
                   {/* Número de lóculos */}
                   <div className="col-md-6 d-flex flex-column">
-                    <label className="form-label fw-semibold text-secondary">
+                    <label htmlFor="numeroLoculos" className="form-label fw-semibold text-secondary">
                       ¿Cuántos lóculos hay? <span className="text-danger">*</span>
                     </label>
                     <input
+                      id="numeroLoculos"
                       name="numeroLoculos"
                       type="number"
                       min="0"
                       className={`form-control ${formErrorsLocal.numeroLoculos ? "is-invalid" : ""}`}
                       value={formData.numeroLoculos || ""}
                       onChange={handleChange}
+                      aria-invalid={!!formErrorsLocal.numeroLoculos}
                     />
                     {formErrorsLocal.numeroLoculos && (
-                      <div className="text-danger mt-1">{formErrorsLocal.numeroLoculos}</div>
+                      <div role="alert" className="text-danger mt-1">
+                        {formErrorsLocal.numeroLoculos}
+                      </div>
                     )}
-                  </div>    
-                  {/* Grosor de los tabiques */}
+                  </div>
+
+                  {/* Grosor */}
                   <div className="col-md-6 d-flex flex-column">
-                    <label className="form-label fw-semibold text-secondary">
+                    <label htmlFor="grosorTabiques" className="form-label fw-semibold text-secondary">
                       Grosor de los tabiques (mm) <span className="text-danger">*</span>
                     </label>
                     <input
+                      id="grosorTabiques"
                       name="grosorTabiques"
                       type="number"
                       min="0"
@@ -824,19 +1002,24 @@ const MassesFormView = ({
                       className={`form-control ${formErrorsLocal.grosorTabiques ? "is-invalid" : ""}`}
                       value={formData.grosorTabiques || ""}
                       onChange={handleChange}
+                      aria-invalid={!!formErrorsLocal.grosorTabiques}
                     />
                     {formErrorsLocal.grosorTabiques && (
-                      <div className="text-danger mt-1">{formErrorsLocal.grosorTabiques}</div>
+                      <div role="alert" className="text-danger mt-1">
+                        {formErrorsLocal.grosorTabiques}
+                      </div>
                     )}
                   </div>
-                </div>    
-                <div className="row g-3 mt-2 mb-0"> {/* fila 2: morfologia + vascularizacion */}
-                  {/* Morfología de los tabiques */}
+                </div>
+
+                {/* FILA 2 */}
+                <div className="row g-3">
                   <div className="col-md-6 d-flex flex-column">
-                    <label className="form-label fw-semibold text-secondary">
+                    <label htmlFor="morfologiaTabiques" className="form-label fw-semibold text-secondary">
                       Morfología de los tabiques <span className="text-danger">*</span>
                     </label>
                     <select
+                      id="morfologiaTabiques"
                       name="morfologiaTabiques"
                       className={`form-select ${formErrorsLocal.morfologiaTabiques ? "is-invalid" : ""}`}
                       value={formData.morfologiaTabiques || ""}
@@ -846,16 +1029,14 @@ const MassesFormView = ({
                       <option value="regular">Regular</option>
                       <option value="irregular">Irregular</option>
                     </select>
-                    {formErrorsLocal.morfologiaTabiques && (
-                      <div className="text-danger mt-1">{formErrorsLocal.morfologiaTabiques}</div>
-                    )}
-                  </div>    
-                  {/* Grado de vascularización */}
+                  </div>
+
                   <div className="col-md-6 d-flex flex-column">
-                    <label className="form-label fw-semibold text-secondary">
+                    <label htmlFor="vascularizacionTabiques" className="form-label fw-semibold text-secondary">
                       Grado de la vascularización de los tabiques <span className="text-danger">*</span>
                     </label>
                     <select
+                      id="vascularizacionTabiques"
                       name="vascularizacionTabiques"
                       className={`form-select ${formErrorsLocal.vascularizacionTabiques ? "is-invalid" : ""}`}
                       value={formData.vascularizacionTabiques || ""}
@@ -867,81 +1048,141 @@ const MassesFormView = ({
                       <option value="moderado (score color 3)">Moderado (score color 3)</option>
                       <option value="abundante (score color 4)">Abundante (score color 4)</option>
                     </select>
-                    {formErrorsLocal.vascularizacionTabiques && (
-                      <div className="text-danger mt-1">{formErrorsLocal.vascularizacionTabiques}</div>
-                    )}
                   </div>
-                </div>    
-              </div>
-            )}    
-            {/* BLOQUE DINÁMICO (ÁREA SÓLIDA) || tipoLesion === "solido"/"solido-quistica"/"quistica" */}
+                </div>
+              </fieldset>
+            )}
+
+{/* ------------------------------------ACCESIBILIDAD WCAG 2.2 (here!!!!!!!) ----------------------------------------- */}
+{/* ------------------------------------------------------------------------------------------------------------------ */}
+{/* ------------------------------------------------------------------------------------------------------------------ */} 
+
+            {/* BLOQUE DINÁMICO (ÁREA SÓLIDA) || tipoLesion === "quistica"/"solido-quistica" */}
             {(formData.tipoLesion === "quistica" || formData.tipoLesion === "solido-quistica") && (
               <div className="p-3 item-appear">
-                {/* Área sólida */}
                 <div>
-                  <h5 className="fw-semibold text-uppercase mb-2 titulo-formulario">
-                    ÁREA SÓLIDA
-                  </h5>
-                  <label className="form-label fw-semibold text-secondary d-block mb-2">
-                    ¿Hay área sólida? <span className="text-danger">*</span>
-                  </label>    
-                  <div
+                  <h5 className="fw-semibold text-uppercase mb-2 titulo-formulario">ÁREA SÓLIDA</h5>
+                  <fieldset
                     className={`rounded bg-white p-3 w-100 ${
                       formErrorsLocal.areaSolida ? "border-danger" : "border-secondary"
                     }`}
+                    aria-describedby={formErrorsLocal.areaSolida ? "areaSolida-error" : undefined}
                   >
-                    {["si", "no"].map((opt) => (
-                      <div className="form-check mb-2" key={opt}>
-                        <input
-                          className="form-check-input"
-                          type="radio"
-                          name="areaSolida"
-                          value={opt}
-                          checked={formData.areaSolida === opt}
-                          onChange={handleChange}
-                        />
-                        <label className="form-check-label">
-                          {opt === "si" ? "Sí" : "No"}
-                        </label>
+                    <legend className="form-label fw-semibold text-secondary mb-2">
+                      ¿Hay área sólida? <span className="text-danger">*</span>
+                    </legend>
+
+                    {["si", "no"].map((opt) => {
+                      const radioId = `areaSolida-${opt}`;
+                      return (
+                        <div className="form-check mb-2" key={opt}>
+                          <input
+                            id={radioId}
+                            className="form-check-input"
+                            type="radio"
+                            name="areaSolida"
+                            value={opt}
+                            checked={formData.areaSolida === opt}
+                            onChange={handleAreaSolidaChange}
+                            aria-invalid={!!formErrorsLocal.areaSolida}
+                          />
+                          <label className="form-check-label" htmlFor={radioId}>
+                            {opt === "si" ? "Sí" : "No"}
+                          </label>
+                        </div>
+                      );
+                    })}
+
+                    {formErrorsLocal.areaSolida && (
+                      <div
+                        id="areaSolida-error"
+                        className="text-danger mt-1"
+                        role="alert"
+                      >
+                        {formErrorsLocal.areaSolida}
                       </div>
-                    ))}
-                  </div>    
-                  {formErrorsLocal.areaSolida && (
-                    <div className="text-danger mt-1">{formErrorsLocal.areaSolida}</div>
-                  )}
+                    )}
+                  </fieldset>
                 </div>
               </div>
-            )}    
+            )}
+  
             {/* BLOQUE DINÁMICO (INFO ÁREA SÓLIDA) || areaSolida === "si" */}
             {formData.areaSolida === "si" && (
-              <div className="item-appear w-100 p-3 mb-2">    
-                {/* fila 1: número + vascularización */}
-                <div className="row g-3 mb-0">    
+              <fieldset
+                className="item-appear w-100 p-3 mb-2"
+                aria-describedby="area-solida-legend"
+              >
+                <legend id="area-solida-legend" className="fw-bold mb-3">
+                  Información del área sólida
+                </legend>
+
+                {/* FILA 1: número + vascularización */}
+                <div className="row g-3 mb-0">
+
                   {/* Número de áreas sólidas */}
                   <div className="col-md-6 d-flex flex-column">
-                    <label className="form-label fw-semibold text-secondary">
+                    <label
+                      htmlFor="numeroAreasSolidas"
+                      className="form-label fw-semibold text-secondary"
+                    >
                       Número de áreas sólidas <span className="text-danger">*</span>
                     </label>
+
                     <input
+                      id="numeroAreasSolidas"
                       name="numeroAreasSolidas"
                       type="number"
                       min="0"
-                      className={`form-control ${formErrorsLocal.numeroAreasSolidas ? "is-invalid" : ""}`}
+                      required
+                      aria-required="true"
+                      aria-invalid={!!formErrorsLocal.numeroAreasSolidas}
+                      aria-describedby={
+                        formErrorsLocal.numeroAreasSolidas
+                          ? "error-numeroAreasSolidas"
+                          : undefined
+                      }
+                      className={`form-control ${
+                        formErrorsLocal.numeroAreasSolidas ? "is-invalid" : ""
+                      }`}
                       value={formData.numeroAreasSolidas || ""}
                       onChange={handleChange}
                     />
+
                     {formErrorsLocal.numeroAreasSolidas && (
-                      <div className="text-danger mt-1">{formErrorsLocal.numeroAreasSolidas}</div>
+                      <div
+                        id="error-numeroAreasSolidas"
+                        role="alert"
+                        className="text-danger mt-1"
+                      >
+                        {formErrorsLocal.numeroAreasSolidas}
+                      </div>
                     )}
-                  </div>    
+                  </div>
+
                   {/* Vascularización de áreas sólidas */}
                   <div className="col-md-6 d-flex flex-column">
-                    <label className="form-label fw-semibold text-secondary">
+                    <label
+                      htmlFor="vascularizacionAreasSolidas"
+                      className="form-label fw-semibold text-secondary"
+                    >
                       Vascularización de las áreas sólidas <span className="text-danger">*</span>
                     </label>
+
                     <select
+                      id="vascularizacionAreasSolidas"
                       name="vascularizacionAreasSolidas"
-                      className={`form-select ${formErrorsLocal.vascularizacionAreasSolidas ? "is-invalid" : ""}`}
+                      required
+                      aria-required="true"
+                      aria-invalid={!!formErrorsLocal.vascularizacionAreasSolidas}
+                      aria-describedby={
+                        formErrorsLocal.vascularizacionAreasSolidas
+                          ? "error-vascularizacionAreasSolidas"
+                          : undefined
+                      }
+                      className={`form-select ${
+                        formErrorsLocal.vascularizacionAreasSolidas ? "is-invalid" : ""
+                      }`}
                       value={formData.vascularizacionAreasSolidas || ""}
                       onChange={handleChange}
                     >
@@ -951,135 +1192,155 @@ const MassesFormView = ({
                       <option value="moderado (score color 3)">Moderado (score color 3)</option>
                       <option value="abundante (score color 4)">Abundante (score color 4)</option>
                     </select>
+
                     {formErrorsLocal.vascularizacionAreasSolidas && (
-                      <div className="text-danger mt-1">{formErrorsLocal.vascularizacionAreasSolidas}</div>
+                      <div
+                        id="error-vascularizacionAreasSolidas"
+                        role="alert"
+                        className="text-danger mt-1"
+                      >
+                        {formErrorsLocal.vascularizacionAreasSolidas}
+                      </div>
                     )}
-                  </div>    
-                </div>    
-                {/* fila 2: medidas */}
-                <div className="row g-3 mt-2 mb-0">   
-                  {/* Medida T */}
-                  <div className="col-md-4 d-flex flex-column">
-                    <label className="form-label fw-semibold text-secondary">
-                      Medida T (mm) <span className="text-danger">*</span>
-                    </label>
-                    <input
-                      name="medidaASolidaT"
-                      type="number"
-                      step="0.1"
-                      min="0"
-                      className={`form-control ${formErrorsLocal.medidaASolidaT ? "is-invalid" : ""}`}
-                      value={formData.medidaASolidaT || ""}
-                      onChange={handleChange}
-                    />
-                    {formErrorsLocal.medidaASolidaT && (
-                      <div className="text-danger mt-1">{formErrorsLocal.medidaASolidaT}</div>
-                    )}
-                  </div>    
-                  {/* Medida AP */}
-                  <div className="col-md-4 d-flex flex-column">
-                    <label className="form-label fw-semibold text-secondary">
-                      Medida AP (mm) <span className="text-danger">*</span>
-                    </label>
-                    <input
-                      name="medidaASolidaAP"
-                      type="number"
-                      step="0.1"
-                      min="0"
-                      className={`form-control ${formErrorsLocal.medidaASolidaAP ? "is-invalid" : ""}`}
-                      value={formData.medidaASolidaAP || ""}
-                      onChange={handleChange}
-                    />
-                    {formErrorsLocal.medidaASolidaAP && (
-                      <div className="text-danger mt-1">{formErrorsLocal.medidaASolidaAP}</div>
-                    )}
-                  </div>    
-                  {/* Medida L */}
-                  <div className="col-md-4 d-flex flex-column">
-                    <label className="form-label fw-semibold text-secondary">
-                      Medida L (mm) <span className="text-danger">*</span>
-                    </label>
-                    <input
-                      name="medidaASolidaL"
-                      type="number"
-                      step="0.1"
-                      min="0"
-                      className={`form-control ${formErrorsLocal.medidaASolidaL ? "is-invalid" : ""}`}
-                      value={formData.medidaASolidaL || ""}
-                      onChange={handleChange}
-                    />
-                    {formErrorsLocal.medidaASolidaL && (
-                      <div className="text-danger mt-1">{formErrorsLocal.medidaASolidaL}</div>
-                    )}
-                  </div>    
-                </div>    
-              </div>
-            )}    
-            {/* Subcaja 3: otras características (desde Sombra acústica posterior hasta el final) */}
-            <div className="p-3 mb-3">    
-              {/* SOMBRA ACÚSTICA POSTERIOR */}
-              <div>
-                <h5 className="fw-semibold text-uppercase mb-2 titulo-formulario">
-                  SOMBRA ACÚSTICA POSTERIOR
-                </h5>
-                <label className="form-label fw-semibold text-secondary d-block mb-2">
-                  ¿Tiene sombra acústica posterior? <span className="text-danger">*</span>
-                </label>    
-                <div
-                  className={`rounded bg-white p-3 w-100 ${
-                    formErrorsLocal.sombra ? "border-danger" : "border-secondary"
-                  }`}
-                >
-                  {["si", "no"].map((opt) => (
-                    <div className="form-check mb-2" key={opt}>
+                  </div>
+                </div>
+
+                {/* FILA 2: medidas */}
+                <div className="row g-3 mt-2 mb-0">
+
+                  {[
+                    { eje: "T", campo: "medidaASolidaT" },
+                    { eje: "AP", campo: "medidaASolidaAP" },
+                    { eje: "L", campo: "medidaASolidaL" },
+                  ].map(({ eje, campo }) => (
+                    <div className="col-md-4 d-flex flex-column" key={campo}>
+                      <label
+                        htmlFor={campo}
+                        className="form-label fw-semibold text-secondary"
+                      >
+                        Medida {eje} (mm) <span className="text-danger">*</span>
+                      </label>
                       <input
-                        className="form-check-input"
-                        type="radio"
-                        name="sombra"
-                        value={opt}
-                        checked={formData.sombra === opt}
+                        id={campo}
+                        name={campo}
+                        type="number"
+                        min="0"
+                        step="0.1"
+                        required
+                        aria-required="true"
+                        aria-invalid={!!formErrorsLocal[campo]}
+                        aria-describedby={
+                          formErrorsLocal[campo] ? `error-${campo}` : undefined
+                        }
+                        className={`form-control ${
+                          formErrorsLocal[campo] ? "is-invalid" : ""
+                        }`}
+                        value={formData[campo] || ""}
                         onChange={handleChange}
                       />
-                      <label className="form-check-label">{opt === "si" ? "Sí" : "No"}</label>
+
+                      {formErrorsLocal[campo] && (
+                        <div
+                          id={`error-${campo}`}
+                          role="alert"
+                          className="text-danger mt-1"
+                        >
+                          {formErrorsLocal[campo]}
+                        </div>
+                      )}
                     </div>
                   ))}
                 </div>
-                {formErrorsLocal.sombra && (
-                  <div className="text-danger mt-1">{formErrorsLocal.sombra}</div>
-                )}
-              </div>    
-              {/* BLOQUE PARÉNQUIMA OVÁRICO SANO */}
-              <div className="mb-3 mt-3">
-                <h5 className="fw-semibold text-uppercase mb-2 titulo-formulario">
-                  PARÉNQUIMA OVÁRICO SANO
-                </h5>
-                <label className="form-label fw-semibold text-secondary d-block mb-2">
-                  ¿Tiene parénquima ovárico sano? <span className="text-danger">*</span>
-                </label>
-                <div className={`rounded bg-white p-3 w-100 ${formErrorsLocal.parenquima ? "border-danger" : "border-secondary"}`}>
-                  {["si","no","no consigo determinarlo"].map((opt) => {
-                    const valueMap = { "si": "si", "no": "no", "no consigo determinarlo": "no determinado" };   
+              </fieldset>
+            )}
+
+            {/* Subcaja 3: otras características (desde Sombra acústica posterior hasta el final) */}
+            <div className="p-3 mb-3">    
+              {/* SOMBRA ACÚSTICA POSTERIOR */}
+              <div className="mb-3">
+                <legend className="fw-semibold text-uppercase mb-2 titulo-formulario">SOMBRA ACÚSTICA POSTERIOR</legend>
+                <fieldset
+                  className={`rounded bg-white p-3 w-100 ${formErrorsLocal.sombra ? "border border-danger" : "border border-secondary"}`}
+                  aria-invalid={!!formErrorsLocal.sombra}
+                  aria-describedby={formErrorsLocal.sombra ? "error-sombra" : undefined}
+                >
+                  <p className="form-label fw-semibold text-secondary mb-2">
+                    ¿Tiene sombra acústica posterior? <span className="text-danger">*</span>
+                  </p>
+
+                  {["si", "no"].map((opt) => {
+                    const inputId = `sombra-${opt}`;
                     return (
                       <div className="form-check mb-2" key={opt}>
                         <input
+                          id={inputId}
+                          className="form-check-input"
+                          type="radio"
+                          name="sombra"
+                          value={opt}
+                          checked={formData.sombra === opt}
+                          onChange={(e) => handleConditionalChange("sombra", e.target.value)}
+                          aria-invalid={!!formErrorsLocal.sombra}
+                          aria-describedby={formErrorsLocal.sombra ? "error-sombra" : undefined}
+                        />
+                        <label className="form-check-label" htmlFor={inputId}>
+                          {opt === "si" ? "Sí" : "No"}
+                        </label>
+                      </div>
+                    );
+                  })}
+
+                  {formErrorsLocal.sombra && (
+                    <div id="error-sombra" role="alert" className="text-danger mt-1">
+                      {formErrorsLocal.sombra}
+                    </div>
+                  )}
+                </fieldset>
+              </div>
+ 
+              {/* BLOQUE PARÉNQUIMA OVÁRICO SANO */}
+              <div className="mb-3 mt-3">
+                <legend className="fw-semibold text-uppercase mb-2 titulo-formulario">PARÉNQUIMA OVÁRICO SANO</legend>
+                <fieldset
+                  className={`rounded bg-white p-3 w-100 ${formErrorsLocal.parenquima ? "border border-danger" : "border border-secondary"}`}
+                  aria-invalid={!!formErrorsLocal.parenquima}
+                  aria-describedby={formErrorsLocal.parenquima ? "error-parenquima" : undefined}
+                >
+                  <p className="form-label fw-semibold text-secondary mb-2">
+                    ¿Tiene parénquima ovárico sano? <span className="text-danger">*</span>
+                  </p>
+
+                  {["si","no","no consigo determinarlo"].map((opt) => {
+                    const valueMap = { "si": "si", "no": "no", "no consigo determinarlo": "no determinado" };
+                    const inputId = `parenquima-${opt.replace(/\s+/g, "")}`;
+                    return (
+                      <div className="form-check mb-2" key={opt}>
+                        <input
+                          id={inputId}
                           className="form-check-input"
                           type="radio"
                           name="parenquima"
                           value={valueMap[opt]}
                           checked={formData.parenquima === valueMap[opt]}
-                          onChange={handleChange}
+                          onChange={(e) => handleConditionalChange("parenquima", e.target.value)}
+                          aria-invalid={!!formErrorsLocal.parenquima}
+                          aria-describedby={formErrorsLocal.parenquima ? "error-parenquima" : undefined}
                         />
-                        <label className="form-check-label">
+                        <label className="form-check-label" htmlFor={inputId}>
                           {opt === "si" ? "Sí" : opt === "no" ? "No" : "No consigo determinarlo"}
                         </label>
                       </div>
                     );
                   })}
-                </div>
-                {formErrorsLocal.parenquima && (
-                  <div className="text-danger mt-1">{formErrorsLocal.parenquima}</div>
-                )}
-              </div>    
+
+                  {formErrorsLocal.parenquima && (
+                    <div id="error-parenquima" role="alert" className="text-danger mt-1">
+                      {formErrorsLocal.parenquima}
+                    </div>
+                  )}
+                </fieldset>
+              </div>
+    
               {/* BLOQUE DINÁMICO PARÉNQUIMA */}
               {formData.parenquima === "si" && (
                 <div className="mb-3 mt-4 item-appear">
@@ -1109,166 +1370,178 @@ const MassesFormView = ({
                   </div>
                 </div>
               )}    
+
               {/* ASCITIS */}
               <div className="mb-3">
                 <h5 className="fw-semibold text-uppercase mb-2 titulo-formulario">ASCITIS</h5>
-                <label className="form-label fw-semibold text-secondary d-block mb-2">
-                  ¿Tiene ascitis? <span className="text-danger">*</span>
-                </label>    
-                <div
-                  className={`rounded bg-white p-3 w-100 ${
-                    formErrorsLocal.ascitis ? "border-danger" : "border-secondary"
-                  }`}
-                >
+                <fieldset className={`rounded bg-white p-3 w-100 ${formErrorsLocal.ascitis ? "border-danger" : "border-secondary"}`}>
+                  <legend className="form-label fw-semibold text-secondary mb-2">
+                    ¿Tiene ascitis? <span className="text-danger">*</span>
+                  </legend>
                   {["si", "no"].map((opt) => (
                     <div className="form-check mb-2" key={opt}>
                       <input
                         className="form-check-input"
                         type="radio"
+                        id={`ascitis-${opt}`}
                         name="ascitis"
                         value={opt}
                         checked={formData.ascitis === opt}
-                        onChange={handleChange}
+                        onChange={(e) => handleConditionalChange("ascitis", e.target.value)}
+                        aria-invalid={!!formErrorsLocal.ascitis}
+                        aria-describedby={formErrorsLocal.ascitis ? "error-ascitis" : undefined}
                       />
-                      <label className="form-check-label">{opt === "si" ? "Sí" : "No"}</label>
+                      <label className="form-check-label" htmlFor={`ascitis-${opt}`}>
+                        {opt === "si" ? "Sí" : "No"}
+                      </label>
                     </div>
                   ))}
-                </div>
+                </fieldset>
                 {formErrorsLocal.ascitis && (
-                  <div className="text-danger mt-1">{formErrorsLocal.ascitis}</div>
-                )}    
-                {/* BLOQUE DINÁMICO || ascitis === "sí" */}
+                  <div className="text-danger mt-1" id="error-ascitis">{formErrorsLocal.ascitis}</div>
+                )}
+
+                {/* BLOQUE DINÁMICO || ascitis === "si" */}
                 {formData.ascitis === "si" && (
                   <div className="mt-3 mb-3 item-appear">
-                    <label className="form-label fw-semibold text-secondary">
+                    <label className="form-label fw-semibold text-secondary" htmlFor="tipoAscitis">
                       ¿De qué tipo es la ascitis? <span className="text-danger">*</span>
                     </label>
-                    <div
-                      className={`rounded mt-2 ${
-                        formErrorsLocal.tipoAscitis ? "border-danger" : "border-secondary"
-                      }`}
-                      style={{ borderWidth: "1px", borderStyle: "solid" }}
+                    <select
+                      name="tipoAscitis"
+                      id="tipoAscitis"
+                      className={`form-select ${formErrorsLocal.tipoAscitis ? "is-invalid" : ""}`}
+                      value={formData.tipoAscitis || ""}
+                      onChange={handleChange}
+                      aria-invalid={!!formErrorsLocal.tipoAscitis}
+                      aria-describedby={formErrorsLocal.tipoAscitis ? "error-tipoAscitis" : undefined}
                     >
-                      <select
-                        name="tipoAscitis"
-                        className="form-select border-0"
-                        value={formData.tipoAscitis || ""}
-                        onChange={handleChange}
-                      >
-                        <option value="" disabled>Seleccione una opción</option>
-                        <option value="leve">Leve</option>
-                        <option value="moderada">Moderada</option>
-                        <option value="abundante">Abundante</option>
-                      </select>
-                    </div>
+                      <option value="" disabled>Seleccione una opción</option>
+                      <option value="leve">Leve</option>
+                      <option value="moderada">Moderada</option>
+                      <option value="abundante">Abundante</option>
+                    </select>
                     {formErrorsLocal.tipoAscitis && (
-                      <div className="text-danger mt-1">{formErrorsLocal.tipoAscitis}</div>
+                      <div className="text-danger mt-1" id="error-tipoAscitis">{formErrorsLocal.tipoAscitis}</div>
                     )}
                   </div>
                 )}
-              </div>    
+              </div>
+              
               {/* CARCINOMATOSIS */}
               <div className="mb-3">
                 <h5 className="fw-semibold text-uppercase mb-2 titulo-formulario">CARCINOMATOSIS</h5>
-                <label className="form-label fw-semibold text-secondary d-block mb-2">
-                  ¿Tiene carcinomatosis? <span className="text-danger">*</span>
-                </label>    
-                <div
-                  className={`rounded bg-white p-3 w-100 ${
-                    formErrorsLocal.carcinomatosis ? "border-danger" : "border-secondary"
-                  }`}
-                >
-                  {["sí", "no", "no valorable"].map((opt) => (
+                <fieldset className={`rounded bg-white p-3 w-100 ${formErrorsLocal.carcinomatosis ? "border-danger" : "border-secondary"}`}>
+                  <legend className="form-label fw-semibold text-secondary mb-2">
+                    ¿Tiene carcinomatosis? <span className="text-danger">*</span>
+                  </legend>
+                  {["si", "no", "no valorable"].map((opt) => (
                     <div className="form-check mb-2" key={opt}>
                       <input
                         className="form-check-input"
                         type="radio"
+                        id={`carcinomatosis-${opt}`}
                         name="carcinomatosis"
                         value={opt}
                         checked={formData.carcinomatosis === opt}
                         onChange={handleChange}
+                        aria-invalid={!!formErrorsLocal.carcinomatosis}
+                        aria-describedby={formErrorsLocal.carcinomatosis ? "error-carcinomatosis" : undefined}
                       />
-                      <label className="form-check-label">
-                        {opt === "sí" ? "Sí" : opt === "no" ? "No" : "No valorable"}
+                      <label className="form-check-label" htmlFor={`carcinomatosis-${opt}`}>
+                        {opt === "si" ? "Sí" : opt === "no" ? "No" : "No valorable"}
                       </label>
                     </div>
                   ))}
-                </div>
+                </fieldset>
                 {formErrorsLocal.carcinomatosis && (
-                  <div className="text-danger mt-1">{formErrorsLocal.carcinomatosis}</div>
+                  <div className="text-danger mt-1" id="error-carcinomatosis">{formErrorsLocal.carcinomatosis}</div>
                 )}
-              </div>    
+              </div>
+                
               {/* ANATOMÍA PATOLÓGICA */}
               <div className="mb-3">
-                <label className="form-label fw-semibold text-secondary d-block mb-2">
-                  ¿Se ha realizado anatomía patológica posterior?
-                </label>    
-                <div className="rounded bg-white p-3 w-100 border border-secondary">
+                <fieldset className="rounded bg-white p-3 w-100 border border-secondary">
+                  <legend className="form-label fw-semibold text-secondary mb-2">
+                    ¿Se ha realizado anatomía patológica posterior?
+                  </legend>
                   {["si", "no", "pendiente"].map((opt) => (
                     <div className="form-check mb-2" key={opt}>
                       <input
                         className="form-check-input"
                         type="radio"
+                        id={`anatomiaPatologica-${opt}`}
                         name="anatomiaPatologica"
                         value={opt}
                         checked={formData.anatomiaPatologica === opt}
-                        onChange={handleChange}
+                        onChange={(e) => handleConditionalChange("anatomiaPatologica", e.target.value)}
+                        aria-invalid={!!formErrorsLocal.anatomiaPatologica}
+                        aria-describedby={formErrorsLocal.anatomiaPatologica ? "error-anatomiaPatologica" : undefined}
                       />
-                    <label className="form-check-label">
-                      {opt === "si" ? "Sí" : opt === "no" ? "No" : "Pendiente"}
-                    </label>
+                      <label className="form-check-label" htmlFor={`anatomiaPatologica-${opt}`}>
+                        {opt === "si" ? "Sí" : opt === "no" ? "No" : "Pendiente"}
+                      </label>
                     </div>
                   ))}
-                </div>
-              </div>    
-              {/* BLOQUE DINÁMICO (ANATOMÍA PATOLÓGIA) || anatomiaPatologica === "sí" */}
+                </fieldset>
+              </div>
+      
+              {/* BLOQUE DINÁMICO (ANATOMÍA PATOLÓGICA) || anatomiaPatologica === "si" */}
               {formData.anatomiaPatologica === "si" && (
                 <div className="mb-3 item-appear">
-                  <label className="form-label fw-semibold text-secondary">
+                  <label className="form-label fw-semibold text-secondary" htmlFor="indicaPatologia">
                     Anatomía patológica definitiva: <span className="text-danger">*</span>
                   </label>
                   <input
                     name="indicaPatologia"
+                    id="indicaPatologia"
                     className={`form-control ${formErrorsLocal.indicaPatologia ? "is-invalid" : ""}`}
                     value={formData.indicaPatologia || ""}
                     onChange={handleChange}
+                    aria-invalid={!!formErrorsLocal.indicaPatologia}
+                    aria-describedby={formErrorsLocal.indicaPatologia ? "error-indicaPatologia" : undefined}
                   />
                   {formErrorsLocal.indicaPatologia && (
-                    <div className="text-danger mt-1">{formErrorsLocal.indicaPatologia}</div>
+                    <div className="text-danger mt-1" id="error-indicaPatologia">{formErrorsLocal.indicaPatologia}</div>
                   )}
                 </div>
-              )}    
-              {/* BLOQUE DINÁMICO (ANATOMÍA PATOLÓGIA) || anatomiaPatologica === "no" */}
+              )}
+
+              {/* BLOQUE DINÁMICO (ANATOMÍA PATOLÓGICA) || anatomiaPatologica === "no" */}
               {formData.anatomiaPatologica === "no" && (
                 <div className="mb-3 item-appear">
                   <label className="form-label fw-semibold text-secondary">
                     ¿La lesión ha estado estable durante el último año? <span className="text-danger">*</span>
-                  </label>    
-                  <div
-                    className={`rounded bg-white p-3 w-100 ${
-                      formErrorsLocal.lesionUltimoAnio ? "border-danger" : "border-secondary"
-                    }`}
-                  >
+                  </label>
+                  <fieldset className={`rounded bg-white p-3 w-100 ${formErrorsLocal.lesionUltimoAnio ? "border-danger" : "border-secondary"}`}>
+                    <legend className="sr-only">¿La lesión ha estado estable durante el último año?</legend>
                     {["si", "no"].map((opt) => (
                       <div className="form-check mb-2" key={opt}>
                         <input
                           className="form-check-input"
                           type="radio"
+                          id={`lesionUltimoAnio-${opt}`}
                           name="lesionUltimoAnio"
                           value={opt}
                           checked={formData.lesionUltimoAnio === opt}
                           onChange={handleChange}
+                          aria-invalid={!!formErrorsLocal.lesionUltimoAnio}
+                          aria-describedby={formErrorsLocal.lesionUltimoAnio ? "error-lesionUltimoAnio" : undefined}
                         />
-                        <label className="form-check-label">{opt === "si" ? "Sí" : "No"}</label>
+                        <label className="form-check-label" htmlFor={`lesionUltimoAnio-${opt}`}>
+                          {opt === "si" ? "Sí" : "No"}
+                        </label>
                       </div>
                     ))}
-                  </div>
+                  </fieldset>
                   {formErrorsLocal.lesionUltimoAnio && (
-                    <div className="text-danger mt-1">{formErrorsLocal.lesionUltimoAnio}</div>
+                    <div className="text-danger mt-1" id="error-lesionUltimoAnio">{formErrorsLocal.lesionUltimoAnio}</div>
                   )}
                 </div>
-              )}    
+              )}
+
             </div>    
+
             {/* BLOQUE DINÁMICO (PROBABILIDAD DE MALIGNIDAD) || tipoLesion === "quistica" */}
             {formData.tipoLesion === "quistica" && (
               <div className="p-3 item-appear">
@@ -1309,187 +1582,200 @@ const MassesFormView = ({
         {formData.masa === "no" && (
           <div
             className="d-flex flex-column gap-4 mb-3 item-appear"
-            style={{
-              display: formData.masa === "no" ? "flex" : "none",
-              visibility: formData.masa === "no" ? "visible" : "hidden",
-              height: formData.masa === "no" ? "auto" : "0",
-              overflow: "hidden",
-            }}
+            aria-hidden={formData.masa !== "no"}
           >
-            {/* Caja 1: Ovario derecho */}
-            <div className="border rounded p-3 bg-formulario-azul item-appear">
-              <h5 className="fw-semibold mb-3 titulo-formulario">
+
+            {/* ================= OVARIO DERECHO ================= */}
+            <fieldset className="border rounded p-3 bg-formulario-azul item-appear">
+              <legend className="fw-semibold mb-3 titulo-formulario">
                 INFORME DEL OVARIO DERECHO
-              </h5>   
-              <h6 className="fw-semibold mb-3 titulo-formulario">
-                ¿Cuánto mide?{" "}
-                <text className="little-text">
-                  (Redondee hasta el número entero que considere)
-                </text>
-              </h6>   
+              </legend>
+
+              <p className="fw-semibold mb-2">
+                ¿Cuánto mide?
+                <span className="little-text"> (Redondee hasta el número entero que considere)</span>
+              </p>
+
               <div className="row mb-3">
+                {/* Medida T */}
                 <div className="col-md-6">
-                  <label className="form-label fw-semibold text-secondary">
+                  <label
+                    htmlFor="ovarioDerechoT"
+                    className="form-label fw-semibold text-secondary"
+                  >
                     Medida (T) del OD (mm)
                   </label>
                   <input
+                    id="ovarioDerechoT"
                     name="ovarioDerechoT"
                     type="number"
                     min="0"
                     step="0.1"
-                    className={`form-control ${
-                      formErrorsLocal.ovarioDerechoT ? "is-invalid" : ""
-                    }`}
-                    value={formData.ovarioDerechoT}
+                    className={`form-control ${formErrorsLocal.ovarioDerechoT ? "is-invalid" : ""}`}
+                    value={formData.ovarioDerechoT || ""}
                     onChange={handleChange}
+                    aria-required="true"
+                    aria-invalid={!!formErrorsLocal.ovarioDerechoT}
+                    aria-describedby={formErrorsLocal.ovarioDerechoT ? "error-od-t" : undefined}
                   />
                   {formErrorsLocal.ovarioDerechoT && (
-                    <div className="text-danger mt-1">{formErrorsLocal.ovarioDerechoT}</div>
+                    <div id="error-od-t" role="alert" className="text-danger mt-1">
+                      {formErrorsLocal.ovarioDerechoT}
+                    </div>
                   )}
                 </div>
+
+                {/* Medida AP */}
                 <div className="col-md-6">
-                  <label className="form-label fw-semibold text-secondary">
+                  <label
+                    htmlFor="ovarioDerechoAP"
+                    className="form-label fw-semibold text-secondary"
+                  >
                     Medida (AP) del OD (mm)
                   </label>
                   <input
+                    id="ovarioDerechoAP"
                     name="ovarioDerechoAP"
                     type="number"
                     min="0"
                     step="0.1"
-                    className={`form-control ${
-                      formErrorsLocal.ovarioDerechoAP ? "is-invalid" : ""
-                    }`}
-                    value={formData.ovarioDerechoAP}
+                    className={`form-control ${formErrorsLocal.ovarioDerechoAP ? "is-invalid" : ""}`}
+                    value={formData.ovarioDerechoAP || ""}
                     onChange={handleChange}
+                    aria-required="true"
+                    aria-invalid={!!formErrorsLocal.ovarioDerechoAP}
+                    aria-describedby={formErrorsLocal.ovarioDerechoAP ? "error-od-ap" : undefined}
                   />
                   {formErrorsLocal.ovarioDerechoAP && (
-                    <div className="text-danger mt-1">{formErrorsLocal.ovarioDerechoAP}</div>
-                  )}
-                </div>
-              </div>    
-              {/* Folículos OD */}
-              <div className="row">
-                <div className="col-md-6">
-                  <label className="form-label fw-semibold text-secondary">
-                    ¿Cuántos folículos tiene el OD?
-                  </label>    
-                  <div
-                    className={`rounded mt-2 ${
-                      formErrorsLocal.foliculosOD ? "border-danger" : "border-secondary"
-                    }`}
-                    style={{ borderWidth: "1px", borderStyle: "solid" }}
-                  >
-                    <select
-                      name="foliculosOD"
-                      className="form-select border-0"
-                      value={formData.foliculosOD}
-                      onChange={handleChange}
-                    >
-                      <option value="" disabled>
-                        Seleccione una opción
-                      </option>
-                      {["1","2","3","4","5","6","7","8","9","10",">10"].map((num) => (
-                        <option key={num} value={num}>
-                          {num}
-                        </option>
-                      ))}
-                    </select>
-                  </div>    
-                  {formErrorsLocal.foliculosOD && (
-                    <div className="text-danger mt-1">{formErrorsLocal.foliculosOD}</div>
+                    <div id="error-od-ap" role="alert" className="text-danger mt-1">
+                      {formErrorsLocal.ovarioDerechoAP}
+                    </div>
                   )}
                 </div>
               </div>
-            </div>    
-            {/* Caja 2: Ovario izquierdo */}
-            <div className="border rounded p-3 bg-formulario-azul item-appear">
-              <h5 className="fw-semibold mb-3 titulo-formulario">
+
+              {/* Folículos OD */}
+              <div className="col-md-6">
+                <label
+                  htmlFor="foliculosOD"
+                  className="form-label fw-semibold text-secondary"
+                >
+                  ¿Cuántos folículos tiene el OD?
+                </label>
+                <select
+                  id="foliculosOD"
+                  name="foliculosOD"
+                  className={`form-select ${formErrorsLocal.foliculosOD ? "is-invalid" : ""}`}
+                  value={formData.foliculosOD || ""}
+                  onChange={handleChange}
+                  aria-required="true"
+                  aria-invalid={!!formErrorsLocal.foliculosOD}
+                  aria-describedby={formErrorsLocal.foliculosOD ? "error-foliculos-od" : undefined}
+                >
+                  <option value="" disabled>Seleccione una opción</option>
+                  {["1","2","3","4","5","6","7","8","9","10",">10"].map(num => (
+                    <option key={num} value={num}>{num}</option>
+                  ))}
+                </select>
+                {formErrorsLocal.foliculosOD && (
+                  <div id="error-foliculos-od" role="alert" className="text-danger mt-1">
+                    {formErrorsLocal.foliculosOD}
+                  </div>
+                )}
+              </div>
+            </fieldset>
+
+            {/* ================= OVARIO IZQUIERDO ================= */}
+            <fieldset className="border rounded p-3 bg-formulario-azul item-appear">
+              <legend className="fw-semibold mb-3 titulo-formulario">
                 INFORME DEL OVARIO IZQUIERDO
-              </h5>
-              <h6 className="fw-semibold mb-3 titulo-formulario">
-                ¿Cuánto mide?{" "}
-                <text className="little-text">
-                  (Redondee hasta el número entero que considere)
-                </text>
-              </h6>   
+              </legend>
+
+              <p className="fw-semibold mb-2">
+                ¿Cuánto mide?
+                <span className="little-text"> (Redondee hasta el número entero que considere)</span>
+              </p>
+
               <div className="row mb-3">
+                {/* Medida T */}
                 <div className="col-md-6">
-                  <label className="form-label fw-semibold text-secondary">
+                  <label htmlFor="ovarioIzquierdoT" className="form-label fw-semibold text-secondary">
                     Medida (T) del OI (mm)
                   </label>
                   <input
+                    id="ovarioIzquierdoT"
                     name="ovarioIzquierdoT"
                     type="number"
                     min="0"
                     step="0.1"
-                    className={`form-control ${
-                      formErrorsLocal.ovarioIzquierdoT ? "is-invalid" : ""
-                    }`}
-                    value={formData.ovarioIzquierdoT}
+                    className={`form-control ${formErrorsLocal.ovarioIzquierdoT ? "is-invalid" : ""}`}
+                    value={formData.ovarioIzquierdoT || ""}
                     onChange={handleChange}
+                    aria-required="true"
+                    aria-invalid={!!formErrorsLocal.ovarioIzquierdoT}
+                    aria-describedby={formErrorsLocal.ovarioIzquierdoT ? "error-oi-t" : undefined}
                   />
                   {formErrorsLocal.ovarioIzquierdoT && (
-                    <div className="text-danger mt-1">
+                    <div id="error-oi-t" role="alert" className="text-danger mt-1">
                       {formErrorsLocal.ovarioIzquierdoT}
                     </div>
                   )}
                 </div>
+
+                {/* Medida AP */}
                 <div className="col-md-6">
-                  <label className="form-label fw-semibold text-secondary">
+                  <label htmlFor="ovarioIzquierdoAP" className="form-label fw-semibold text-secondary">
                     Medida (AP) del OI (mm)
                   </label>
                   <input
+                    id="ovarioIzquierdoAP"
                     name="ovarioIzquierdoAP"
                     type="number"
                     min="0"
                     step="0.1"
-                    className={`form-control ${
-                      formErrorsLocal.ovarioIzquierdoAP ? "is-invalid" : ""
-                    }`}
-                    value={formData.ovarioIzquierdoAP}
+                    className={`form-control ${formErrorsLocal.ovarioIzquierdoAP ? "is-invalid" : ""}`}
+                    value={formData.ovarioIzquierdoAP || ""}
                     onChange={handleChange}
+                    aria-required="true"
+                    aria-invalid={!!formErrorsLocal.ovarioIzquierdoAP}
+                    aria-describedby={formErrorsLocal.ovarioIzquierdoAP ? "error-oi-ap" : undefined}
                   />
                   {formErrorsLocal.ovarioIzquierdoAP && (
-                    <div className="text-danger mt-1">
+                    <div id="error-oi-ap" role="alert" className="text-danger mt-1">
                       {formErrorsLocal.ovarioIzquierdoAP}
                     </div>
                   )}
                 </div>
-              </div>    
-              {/* Folículos OI */}
-              <div className="row">
-                <div className="col-md-6">
-                  <label className="form-label fw-semibold text-secondary">
-                    ¿Cuántos folículos tiene el OI?
-                  </label>    
-                  <div
-                    className={`rounded mt-2 ${
-                      formErrorsLocal.foliculosOI ? "border-danger" : "border-secondary"
-                    }`}
-                    style={{ borderWidth: "1px", borderStyle: "solid" }}
-                  >
-                    <select
-                      name="foliculosOI"
-                      className="form-select border-0"
-                      value={formData.foliculosOI}
-                      onChange={handleChange}
-                    >
-                      <option value="" disabled>
-                        Seleccione una opción
-                      </option>
-                      {["1","2","3","4","5","6","7","8","9","10",">10"].map((num) => (
-                        <option key={num} value={num}>
-                          {num}
-                        </option>
-                      ))}
-                    </select>
-                  </div>    
-                  {formErrorsLocal.foliculosOI && (
-                    <div className="text-danger mt-1">{formErrorsLocal.foliculosOI}</div>
-                  )}
-                </div>
               </div>
-            </div>
+
+              {/* Folículos OI */}
+              <div className="col-md-6">
+                <label htmlFor="foliculosOI" className="form-label fw-semibold text-secondary">
+                  ¿Cuántos folículos tiene el OI?
+                </label>
+                <select
+                  id="foliculosOI"
+                  name="foliculosOI"
+                  className={`form-select ${formErrorsLocal.foliculosOI ? "is-invalid" : ""}`}
+                  value={formData.foliculosOI || ""}
+                  onChange={handleChange}
+                  aria-required="true"
+                  aria-invalid={!!formErrorsLocal.foliculosOI}
+                  aria-describedby={formErrorsLocal.foliculosOI ? "error-foliculos-oi" : undefined}
+                >
+                  <option value="" disabled>Seleccione una opción</option>
+                  {["1","2","3","4","5","6","7","8","9","10",">10"].map(num => (
+                    <option key={num} value={num}>{num}</option>
+                  ))}
+                </select>
+                {formErrorsLocal.foliculosOI && (
+                  <div id="error-foliculos-oi" role="alert" className="text-danger mt-1">
+                    {formErrorsLocal.foliculosOI}
+                  </div>
+                )}
+              </div>
+            </fieldset>
+
           </div>
         )}
 

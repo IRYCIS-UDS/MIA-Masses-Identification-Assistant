@@ -1,14 +1,23 @@
 .bg-formulario-azul{
     background-color: #f6f6ff;
 }
-.titulo-formulario{/* Título azul */
+
+.titulo-formulario{ /* Título azul */
     font-size: 22px; 
     font-weight: bold;
     color: #34495e;
     padding-top: 5px;
 }
+
 .little-text{
   font-size: 17px; 
+}
+
+.mi-formulario fieldset legend {
+    font-size: 1rem;       /* igual que .form-label */
+    font-weight: 600;      /* fw-semibold */
+    color: #6c757d;        /* text-secondary */
+    margin-bottom: 0.5rem; /* espaciado igual que label */
 }
 
 /* Efecto visual al aparecer los ITEMS */
@@ -17,35 +26,11 @@
   60% { box-shadow: 0 0 8px 4px rgba(255, 215, 0, 0.3); }
   100% { background-color: transparent; box-shadow: none; }
 }
+
 .item-appear {
   animation: softHighlight 1.2s ease-out;
   border-radius: 8px;
 }
-
-
-/* Forzamos que el borde rojo en caso de error */
-/* .border-danger {
-  border: 1px solid #dc3545 !important;
-} */
-/* Forzamos que el borde sea gris por defecto */
-/* .border-secondary {
-  border: 1px solid #ced4da !important;
-} */
-
-/* Borde rojo cuando hay error */
-/* div.border-danger,
-.form-select.border-danger,
-.form-control.border-danger {
-  border: 1px solid #dc3545 !important;
-} */
-
-/* Borde gris por defecto */
-/* div.border-secondary,
-.form-select.border-secondary,
-.form-control.border-secondary {
-  border: 1px solid #ced4da !important;
-}
- */
 
 /* Scoped with high specificity to beat Bootstrap */
 .mi-formulario div.border-danger,

@@ -124,20 +124,7 @@ const MassesFormContainer = (props) => {
     Modal.getOrCreateInstance(modalEl).show();
   };
 
-  // ----------------------------------------------------
-  // CAMBIO GENERAL DE INPUTS
-  // ----------------------------------------------------
-  // const handleChange = (e) => {
-  //   const { name, value } = e.target;
-  //   setFormData((prev) => ({ ...prev, [name]: value }));
-  //   setFormErrorsLocal((prev) => {
-  //     const newErrors = { ...prev };
-  //     delete newErrors[name];
-  //     return newErrors;
-  //   });
-  // };
-
-  //este borrarlo y descomentar el de arriba (!)
+  // Maneja los campos generales del formulario
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -154,16 +141,231 @@ const MassesFormContainer = (props) => {
     });
   };
 
+  // Maneja el cambio de informes (Informe Masa / Informe Ovario)
+  const handleConditionalChange = (name, value) => {
+    let fieldsToReset = [];
 
-  const handleMasaChange = (e) => {
-    const { value } = e.target;
-    setFormData((prev) => ({ ...prev, masa: value }));
-    setFormErrorsLocal((prev) => {
-      const newErrors = { ...prev };
-      delete newErrors.masa;
-      return newErrors;
+    // Reseteo completo de informes según la variable "masa"
+    if (name === "masa") {
+      if (value === "si") {
+        // Abrimos masa, limpiamos campos de ovario
+        fieldsToReset = [
+          "ovarioDerechoT","ovarioDerechoAP","foliculosOD",
+          "ovarioIzquierdoT","ovarioIzquierdoAP","foliculosOI"
+        ];
+      } else if (value === "no") {
+        // Abrimos ovario, limpiamos campos de masa
+        fieldsToReset = [
+          "localizacion","estructura","tipoLesion","contenido","sombra","parenquima",
+          "ascitis","carcinomatosis","anatomiaPatologica","medidaT","medidaAP","medidaL",
+          "medidaPosT","medidaPosAP","medidaPosL","tipoAscitis","indicaPatologia","lesionUltimoAnio",
+          "contornoExterno","vascularizacion","grosorPared","gradoVascularizacionPared",
+          "contornoInterno","papilas","tabiques","areaSolida","numeroPapilas","contornoPapilas",
+          "vascularizacionPapilas","medidaPapilasT","medidaPapilasAP","numeroLoculos","grosorTabiques",
+          "morfologiaTabiques","vascularizacionTabiques","numeroAreasSolidas","vascularizacionAreasSolidas",
+          "medidaASolidaT","medidaASolidaAP","medidaASolidaL","otroContenido","otraIndicacion",
+          "probabilidadMalignidad"
+        ];
+      }
+    }
+
+    // PARÉNQUIMA OVÁRICO
+    if (name === "parenquima" && value !== "si") {
+      fieldsToReset = ["medidaPosT", "medidaPosAP", "medidaPosL"];
+    }
+
+    // ASCITIS
+    if (name === "ascitis" && value !== "si") {
+      fieldsToReset = ["tipoAscitis"];
+    }
+    
+    // PARÉNQUIMA OVÁRICO
+    if (name === "parenquima") {
+      if (value !== "si") {
+        fieldsToReset = ["medidaPosT", "medidaPosAP", "medidaPosL"];
+      }
+    }
+
+    // ANATOMÍA PATOLÓGICA
+    if (name === "anatomiaPatologica") {
+      if (value === "si") {
+        fieldsToReset = ["lesionUltimoAnio"];
+      } else if (value === "no") {
+        fieldsToReset = ["indicaPatologia"];
+      }
+    }
+
+    setFormData(prev => ({
+      ...prev,
+      [name]: value,
+      ...fieldsToReset.reduce((acc, field) => ({ ...acc, [field]: "" }), {})
+    }));
+
+    setFormErrorsLocal(prev => {
+      const copy = { ...prev };
+      fieldsToReset.forEach(field => delete copy[field]);
+      delete copy[name]; // <-- elimina también el error del propio campo
+      return copy;
     });
   };
+
+  // Reseteo selectivo dentro de un informe (tipoLesion)
+  const handleTipoLesionChange = (e) => {
+    const value = e.target.value;
+
+    let fieldsToReset = [];
+    if (value !== "solido") {
+      fieldsToReset.push("contornoExterno", "vascularizacion");
+    }
+    if (value !== "quistica") {
+      fieldsToReset.push(
+        "grosorPared","gradoVascularizacionPared","contornoInterno",
+        "papilas","tabiques","areaSolida","numeroPapilas","contornoPapilas",
+        "vascularizacionPapilas","medidaPapilasT","medidaPapilasAP","numeroLoculos",
+        "grosorTabiques","morfologiaTabiques","vascularizacionTabiques",
+        "numeroAreasSolidas","vascularizacionAreasSolidas","medidaASolidaT","medidaASolidaAP","medidaASolidaL"
+      );
+    }
+
+    setFormData(prev => ({
+      ...prev,
+      tipoLesion: value,
+      ...fieldsToReset.reduce((acc, field) => ({ ...acc, [field]: "" }), {})
+    }));
+
+    setFormErrorsLocal(prev => {
+      const copy = { ...prev };
+      fieldsToReset.forEach(field => delete copy[field]);
+      delete copy.tipoLesion; // <-- elimina también el error del propio campo
+      return copy;
+    });
+  };
+  
+  // Reseteo selectivo dentro de un informe (papilas)
+  const handlePapilasChange = (e) => {
+    const { name, value } = e.target;
+
+    // Todos los subcampos dependientes
+    const papilasFields = [
+      "numeroPapilas",
+      "contornoPapilas",
+      "vascularizacionPapilas",
+      "medidaPapilasT",
+      "medidaPapilasAP"
+    ];
+
+    // 🟢 1) Si el campo que cambia es el RADIO "papilas"
+    if (name === "papilas") {
+      const fieldsToReset = value === "no" ? papilasFields : [];
+
+      // Actualizar formData
+      setFormData(prev => ({
+        ...prev,
+        papilas: value,
+        ...fieldsToReset.reduce((acc, f) => ({ ...acc, [f]: "" }), {})
+      }));
+
+      // Limpiar errores
+      setFormErrorsLocal(prev => {
+        const copy = { ...prev };
+        delete copy.papilas;
+        fieldsToReset.forEach(f => delete copy[f]);
+        return copy;
+      });
+
+      return; // ⛔ Muy importante
+    }
+
+    // 🟡 2) Si cambia cualquier campo dependiente:
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+
+    // Limpiar error de ese campo puntual
+    setFormErrorsLocal(prev => {
+      const copy = { ...prev };
+      delete copy[name];
+      return copy;
+    });
+  };
+
+  // Reseteo selectivo dentro de un informe (tabiques)
+  const handleTabiquesChange = (e) => {
+    const value = e.target.value;
+
+    const tabiquesFields = [
+      "numeroLoculos",
+      "grosorTabiques",
+      "morfologiaTabiques",
+      "vascularizacionTabiques"
+    ];
+
+    setFormData(prev => ({
+      ...prev,
+      tabiques: value,
+      ...(value === "no"
+        ? tabiquesFields.reduce((acc, f) => ({ ...acc, [f]: "" }), {})
+        : {})
+    }));
+
+    setFormErrorsLocal(prev => {
+      const copy = { ...prev };
+      delete copy.tabiques;
+      if (value === "no") {
+        tabiquesFields.forEach(f => delete copy[f]);
+      }
+      return copy;
+    });
+  };
+
+  // Reseteo selectivo dentro de un informe (areaSolida)
+  const handleAreaSolidaChange = (e) => {
+    const value = e.target.value;
+
+    const areaSolidaFields = [
+      "numeroAreasSolidas",
+      "vascularizacionAreasSolidas",
+      "medidaASolidaT",
+      "medidaASolidaAP",
+      "medidaASolidaL"
+    ];
+
+    // Si NO hay área sólida, limpiamos todo lo dependiente
+    const fieldsToReset = value === "no" ? areaSolidaFields : [];
+
+    setFormData(prev => ({
+      ...prev,
+      areaSolida: value,
+      ...fieldsToReset.reduce((acc, field) => {
+        acc[field] = "";
+        return acc;
+      }, {})
+    }));
+
+    setFormErrorsLocal(prev => {
+      const copy = { ...prev };
+
+      // error del propio radio
+      delete copy.areaSolida;
+
+      // errores de los campos dependientes
+      fieldsToReset.forEach(field => delete copy[field]);
+
+      return copy;
+    });
+  };
+
+  // Función SUSTITUIDA por handleConditionalChange()
+  // const handleMasaChange = (e) => {
+  //   const { value } = e.target;
+  //   setFormData((prev) => ({ ...prev, masa: value }));
+  //   setFormErrorsLocal((prev) => {
+  //     const newErrors = { ...prev };
+  //     delete newErrors.masa;
+  //     return newErrors;
+  //   });
+  // };
 
   const handleAddMasa = () => {
     const jsonActual = buildAdnexalMassesJSON(formData);
@@ -352,8 +554,6 @@ const MassesFormContainer = (props) => {
       formErrorsLocal={formErrorsLocal}
       handleSubmit={handleSubmit}
       makeMassesReport={makeMassesReport}
-      handleChange={handleChange}
-      handleAddMasa={handleAddMasa}
       resetCamposMasa={resetCamposMasa}
       showModal={showModal}
       setFormErrorsLocal={setFormErrorsLocal}
@@ -362,10 +562,26 @@ const MassesFormContainer = (props) => {
       masaIndexVisible={masaIndexVisible}
       datosBloqueados={datosBloqueados}
       validarMasaSi={validarMasaSi}
-      handleMasaChange={handleMasaChange}
       handleGenerarInforme={handleGenerarInforme}
       handleConfirmarInforme={handleConfirmarInforme}
       refConclusion={conclusionRef}
+
+
+
+
+      handleChange={handleChange}
+
+      handleConditionalChange={handleConditionalChange}
+
+      handleTipoLesionChange={handleTipoLesionChange}
+      handlePapilasChange={handlePapilasChange}
+      handleTabiquesChange={handleTabiquesChange}
+      handleAreaSolidaChange={handleAreaSolidaChange}
+
+
+
+      // handleAddMasa={handleAddMasa}
+      // handleMasaChange={handleMasaChange}
     />
   );
 };

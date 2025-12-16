@@ -25,10 +25,12 @@ const MainScreen = () => {
   // const [formData,setFormData]=useState({codigo:"LAF000013",edad:"22",fur:"2025-11-12",indicacion:"dolor de vivir",ecografista:"GIN",hospital:"hurc",experto:"si",referencia:"si",masa:"si",localizacion:"bilateral",estructura:"trompa",tipoLesion:"quistica",contenido:"en vidrio esmerilado",sombra:"si",parenquima:"si",ascitis:"si",carcinomatosis:"no valorable",anatomiaPatologica:"si",medidaT:"3",medidaAP:"3",medidaL:"3",medidaPosT:"4",medidaPosAP:"3",medidaPosL:"5",tipoAscitis:"moderada",indicaPatologia:"tfdhbgddfgb",lesionUltimoAnio:"si",contornoExterno:"2",vascularizacion:"leve (grado x)",grosorPared:"3",gradoVascularizacionPared:"moderada (grado x)",contornoInterno:"irregular",papilas:"si",tabiques:"si",areaSolida:"si",numeroPapilas:"3",contornoPapilas:"regular",vascularizacionPapilas:"leve",medidaPapilasT:"3",medidaPapilasAP:"3",numeroLoculos:"23",grosorTabiques:"4",morfologiaTabiques:"regular",vascularizacionTabiques:"ninguno (score color 1)",numeroAreasSolidas:"34",vascularizacionAreasSolidas:"leve (score color 2)",medidaASolidaT:"5",medidaASolidaAP:"4",medidaASolidaL:"3",otroContenido:"otro texto contenido blabla",otraIndicacion:"otro texto indicacion blabla",probabilidadMalignidad:"si",ovarioDerechoT:"2",ovarioDerechoAP:"3",foliculosOD:"23",ovarioIzquierdoT:"3",ovarioIzquierdoAP:"5",foliculosOI:"23",conclusionEcografista:"El paciente debe acudir nuevamente para revisión."});
 
   const [formData,setFormData]=useState({
-    // CAMPOS GENERALES
+    // ------------ CAMPOS GENERALES ------------
     codigo:"",edad:"",fur:"",indicacion:"",ecografista:"",
     hospital:"",experto:"",referencia:"",masa:"",
-    // MASA ANEXIAL
+    // Conclusión
+    conclusionEcografista:"",
+    // ------------ Informe MASA ANEXIAL ------------
     localizacion:"",estructura:"",tipoLesion:"",contenido:"",
     sombra:"",parenquima:"",ascitis:"",carcinomatosis:"",
     anatomiaPatologica:"",medidaT:"",medidaAP:"",medidaL:"",
@@ -58,11 +60,9 @@ const MainScreen = () => {
     otraIndicacion:"",
     // Tipo lesión
     probabilidadMalignidad:"",
-    // Ovario
+    // ------------ Informe OVARIO ------------
     ovarioDerechoT:"",ovarioDerechoAP:"",foliculosOD:"",
-    ovarioIzquierdoT:"",ovarioIzquierdoAP:"",foliculosOI:"",
-    // Conclusión
-    conclusionEcografista:""
+    ovarioIzquierdoT:"",ovarioIzquierdoAP:"",foliculosOI:""
   });
 
   const [formErrors, setFormErrors] = useState({});
@@ -235,6 +235,7 @@ const MainScreen = () => {
       marginBottom: 5,
     }
   });
+
   // CREA EL INFORME:
   const makeMassesReport = async (formData) => {
     
@@ -260,6 +261,14 @@ const MainScreen = () => {
     const medidaL = parseFloat(formData.medidaL || 0);
     const volumenMM3 = medidaT * medidaAP * medidaL;
     const volumenCM3 = (volumenMM3 / 1000).toFixed(2); // Convertimos a cm³
+
+    // Formateo del texto:
+    const tipoLesion = (() => {
+      if (formData.tipoLesion === "quistica") return "quística";
+      if (formData.tipoLesion === "solido") return "sólido";
+      if (formData.tipoLesion === "solido-quistica") return "sólido-quística";
+      return "";
+    })();
 
     const calcularLogit = (contornoInterno, sombra, vascularizacionAreasSolidas, vascularizacionPapilas) => {
       let logit = -3.625;
@@ -296,13 +305,11 @@ const MainScreen = () => {
           <Text style={styles.subtitle}>Indicación de la ecografía:</Text>
           <Text style={styles.paragraph}>
             {(() => {
-              // Construir edad
               const edadTexto = formData.edad ? `de ${formData.edad} años ` : "";
-              // Construir indicación
-              const indicacionTexto = formData.indicacion === "otro" 
-              ? formData.otraIndicacion 
-              : formData.indicacion;
-              return `Mujer ${edadTexto}que acude a consulta de ecografía para valoración por ${indicacionTexto}.`;
+              const indicacion = formData.indicacion === "otro" 
+                ? formData.otraIndicacion || "motivo no especificado" 
+                : formData.indicacion || "motivo no especificado";
+              return `Mujer ${edadTexto}que acude a consulta de ecografía para valoración por ${indicacion}.`;
             })()}
           </Text>
 
@@ -320,7 +327,7 @@ const MainScreen = () => {
                 <Text style={styles.bold}>
                   {medidaT} x {medidaAP} x {medidaL} mm ({volumenCM3} cm³)
                 </Text>{" "}
-                de aspecto <Text style={styles.bold}>{formData.tipoLesion}</Text>
+                de aspecto <Text style={styles.bold}>{tipoLesion}</Text>
                 {formData.contenido === "otro" ? (
                   <> y de contenido {formData.otroContenido}.</>
                 ) : (
@@ -383,7 +390,7 @@ const MainScreen = () => {
                 </Text>
               )}
 
-              {/* CARCINOMSATOSIS */}
+              {/* CARCINOMATOSIS */}
               {formData.carcinomatosis === "si" && (
                 <Text style={styles.paragraph}>Hay carcinomatosis.</Text>
               )}
@@ -448,7 +455,7 @@ const MainScreen = () => {
 
 
   return (
-    <div className="container mt-4">
+    <main className="container mt-4">
       <MassesFormContainer
         formData={formData}
         formErrors={formErrors}
@@ -456,7 +463,7 @@ const MainScreen = () => {
         makeMassesReport={makeMassesReport}
         setFormData={setFormData}
       />
-    </div>
+    </main>
   );
 };
 
