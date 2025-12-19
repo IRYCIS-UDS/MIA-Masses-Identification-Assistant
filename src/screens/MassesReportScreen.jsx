@@ -449,12 +449,9 @@ const MainScreen = () => {
     const blob = await pdf(doc).toBlob();
     saveAs(blob, "informe.pdf");
 
-    // 🔹 Recargar la página para resetear el formulario
-    navigate("/", { replace: true });
-
-
+    // 🔹 Volver a la página principal:
+    navigate("../", { replace: true });
   };
-
 
   return (
     <main className="container mt-4">
