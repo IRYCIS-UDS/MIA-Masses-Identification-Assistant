@@ -2,6 +2,7 @@
 
 // import { useKeycloak } from "@react-keycloak/web";
 import { Routes, Route } from "react-router-dom";
+<<<<<<< Updated upstream
 import "bootstrap/dist/css/bootstrap.min.css";
 import './App.css';
 import HomeScreen from "./screens/MainScreen";
@@ -12,7 +13,12 @@ import Layout from "./layout/Layout";
 /* import DownloadScreen from "./screens/DownloadScreen"; */
 /* import EncountersScreen from "./screens/EncountersScreen"; */
 /* import ApiService from "./services/ApiService"; */
+=======
+>>>>>>> Stashed changes
 import { useState } from "react";
+import "./App.css";
+import { MainScreen, MassesReportScreen } from "./screens";
+import Layout from "./layout/Layout";
 
 // 🧩 Simulación de autenticación eliminada
 // Creamos un usuario ficticio para que la interfaz tenga algo que mostrar
@@ -39,6 +45,7 @@ function App() {
   const [practitionerName] = useState("Demo User");
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
+<<<<<<< Updated upstream
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
   };
@@ -103,6 +110,34 @@ function App() {
         </Route>
       </Routes>
     </>
+=======
+
+  // Función simplificada: ahora solo cambia el estado booleano
+  const toggleSidebar = () => setSidebarOpen((prev) => !prev);
+
+  // ELIMINAR nombre de usuario simulado:
+  const userName = "Usuario Demo"; 
+
+  return (
+    <Routes>
+      <Route
+        path="/"
+        element={
+          <Layout
+            sidebarOpen={sidebarOpen}
+            toggleSidebar={toggleSidebar}
+
+            // ELIMINAR nombre de usuario simulado:
+            userName={userName}
+          />
+        }
+      >
+        {/* SCREENS: */}
+        <Route index element={<MainScreen />} />
+        <Route path="masses" element={<MassesReportScreen />} />
+      </Route>
+    </Routes>
+>>>>>>> Stashed changes
   );
 }
 

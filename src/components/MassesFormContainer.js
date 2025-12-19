@@ -105,7 +105,7 @@ export const buildAdnexalMassesJSON = (formData) => {
 };
 
 // ----------------------------------------------------
-// COMPONENTE PRINCIPAL MassesFormContainer
+// COMPONENTE PRINCIPAL
 // ----------------------------------------------------
 const MassesFormContainer = (props) => {
   const { formData, setFormData, handleSubmit, formErrors, makeMassesReport } = props;

@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../assets/css/MainScreen.css";
@@ -468,3 +469,93 @@ const MainScreen = () => {
 };
 
 export default MainScreen;
+=======
+import { Box, Typography, Button, Grid } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import doctora from "../assets/images/doctora.png";
+
+const MainScreen = () => {
+  const navigate = useNavigate();
+
+  const handleOpenMassesForm = () => {
+    navigate("/masses");
+  };
+
+  const exampleForms = [
+    { name: "Informe Miomas" },
+    { name: "Informe Endometriosis" },
+  ];
+
+  return (
+    // Usamos component="main" para indicar que es el contenido principal (WCAG)
+    <Box component="main" sx={{ px: { xs: 2, sm: 4 }, py: { xs: 2, md: 3 } }}>
+      <Typography
+        variant="h4"
+        component="h1" // H1 semántico para lectores de pantalla
+        gutterBottom
+        sx={{
+          fontSize: { xs: "1.5rem", sm: "1.75rem", md: "2rem" },
+          textAlign: { xs: "center", sm: "left" },
+          mb: 4,
+          fontWeight: 'bold'
+        }}
+      >
+        Generación de informes - Revisión Ginecológica
+      </Typography>
+
+      <Grid container spacing={3} alignItems="center">
+        <Grid item xs={12} md={6}>
+          <Box 
+            component="nav" // Semántica de navegación para los botones
+            aria-label="Selección de tipo de informe"
+            sx={{ display: "flex", flexDirection: "column", gap: 2 }}
+          >
+            <Button
+              variant="contained"
+              color="primary"
+              fullWidth
+              onClick={handleOpenMassesForm}
+              sx={{ py: 2, fontSize: "1rem" }}
+            >
+              Informe Masa Anexial
+            </Button>
+
+            {exampleForms.map((form, index) => (
+              <Button
+                key={index}
+                variant="outlined"
+                color="secondary"
+                fullWidth
+                disabled
+                aria-disabled="true" // Indica a tecnologías asistivas que no es interactivo
+                sx={{ py: 2, fontSize: "1rem" }}
+              >
+                {form.name}
+              </Button>
+            ))}
+          </Box>
+        </Grid>
+
+        <Grid item xs={12} md={6} sx={{ display: "flex", justifyContent: "center" }}>
+          <Box
+            component="img"
+            src={doctora}
+            // "alt" descriptivo o vacío si es puramente decorativa. 
+            // En este caso, mejor vacío para no distraer si no aporta info médica.
+            alt="" 
+            aria-hidden="true" 
+            sx={{
+              width: { xs: "80%", sm: "60%", md: "80%" },
+              maxWidth: 400,
+              height: "auto",
+              objectFit: "contain",
+            }}
+          />
+        </Grid>
+      </Grid>
+    </Box>
+  );
+};
+
+export default MainScreen;
+>>>>>>> Stashed changes

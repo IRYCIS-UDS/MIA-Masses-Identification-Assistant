@@ -4,10 +4,6 @@ import { Box } from "@mui/material";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 
-import LogoHRYC from "../assets/images/LogoHRYC.jpg";
-import LogoIrycis from "../assets/images/logo-irycis.png";
-
-
 const GenerateReportScreen = () => {
   const location = useLocation();
   const { formData } = location.state;
