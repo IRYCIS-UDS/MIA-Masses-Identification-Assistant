@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/MIA-Masses-Identification-Assistant/static/css/main.d3e68109.css",
-    "main.js": "/MIA-Masses-Identification-Assistant/static/js/main.e384234a.js",
+    "main.js": "/MIA-Masses-Identification-Assistant/static/js/main.d86fc57d.js",
     "static/js/977.ced43869.chunk.js": "/MIA-Masses-Identification-Assistant/static/js/977.ced43869.chunk.js",
     "static/js/455.67af05a7.chunk.js": "/MIA-Masses-Identification-Assistant/static/js/455.67af05a7.chunk.js",
     "static/media/logo-mia.png": "/MIA-Masses-Identification-Assistant/static/media/logo-mia.d09ef5ddda111994876f.png",
@@ -11,12 +11,12 @@
     "service-worker.js": "/MIA-Masses-Identification-Assistant/service-worker.js",
     "index.html": "/MIA-Masses-Identification-Assistant/index.html",
     "main.d3e68109.css.map": "/MIA-Masses-Identification-Assistant/static/css/main.d3e68109.css.map",
-    "main.e384234a.js.map": "/MIA-Masses-Identification-Assistant/static/js/main.e384234a.js.map",
+    "main.d86fc57d.js.map": "/MIA-Masses-Identification-Assistant/static/js/main.d86fc57d.js.map",
     "977.ced43869.chunk.js.map": "/MIA-Masses-Identification-Assistant/static/js/977.ced43869.chunk.js.map",
     "455.67af05a7.chunk.js.map": "/MIA-Masses-Identification-Assistant/static/js/455.67af05a7.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.d3e68109.css",
-    "static/js/main.e384234a.js"
+    "static/js/main.d86fc57d.js"
   ]
 }
