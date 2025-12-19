@@ -450,7 +450,9 @@ const MainScreen = () => {
     saveAs(blob, "informe.pdf");
 
     // 🔹 Recargar la página para resetear el formulario
-    window.location.reload();
+    navigate("/", { replace: true });
+
+
   };
 
 
